@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "portfolio1",
+      "description": "Logo for HACA Martinique",
+      "imageUrl": "https://images.unsplash.com/photo-1629190002043-8fba154f7c19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYXJ0aW5pcXVlJTIwZmxhZ3xlbnwwfHx8fDE3Njg0OTkyODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "HACA Martinique logo"
+    },
+    {
+      "id": "portfolio2",
+      "description": "Logo for Paideia",
+      "imageUrl": "https://images.unsplash.com/photo-1554696468-19f8c7a71ad5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhbmNpZW50JTIwc2Nyb2xsfGVufDB8fHx8fDE3Njg0MzU5OTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Paideia logo"
+    },
+    {
+      "id": "portfolio3",
+      "description": "Logo for Atlas Nutrition",
+      "imageUrl": "https://images.unsplash.com/photo-1619860689245-e4965fd296d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxncmVlayUyMHN0YXR1ZXxlbnwwfHx8fDE3Njg0NTM1NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Atlas Nutrition logo"
+    },
+    {
+      "id": "portfolio4",
+      "description": "Logo for Outrun Project",
+      "imageUrl": "https://images.unsplash.com/photo-1685103127857-312c0ab4aa91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXRybyUyMHN1bnNldHxlbnwwfHx8fDE3Njg0ODY4MDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Outrun Project logo"
+    }
+  ]
+}

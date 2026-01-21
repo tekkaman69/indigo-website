@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Portfolio collection - allow all for now (add authentication later)
+    match /portfolio/{document=**} {
+      allow read, write: if true;
+    }
+
+    // Assets collection - allow all for now (add authentication later)
+    match /assets/{assetId} {
+      allow read: if true;  // Anyone can read assets
+      allow write: if true; // Anyone can create/update assets (add auth later)
+      allow delete: if true; // Anyone can delete unused assets (add auth later)
+    }
+
+    // Contact messages
+    match /contact-messages/{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
