@@ -3,10 +3,16 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Menu, X, LogIn, Settings, LogOut } from 'lucide-react';
+import { Menu, X, LogIn, Settings, LogOut, FileText, ShoppingBag, Users, Sliders } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import GradientButton from '../ui/GradientButton';
 import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { auth } from '@/lib/firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { isAdminUid } from '@/lib/admin';
@@ -17,6 +23,7 @@ import { useToast } from '@/hooks/use-toast';
 const navItems = [
   { name: 'Accueil', href: '/' },
   { name: 'Portfolio', href: '/portfolio' },
+  { name: 'Services', href: '/services' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -90,13 +97,40 @@ const Header = () => {
             </Link>
           ))}
           {isAdmin && (
-            <Link
-              href="/admin/portfolio"
-              className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1"
-            >
-              <Settings className="w-4 h-4" />
-              Portfolio Admin
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
+                  <Settings className="w-4 h-4" />
+                  Portail Admin
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/portfolio" className="flex items-center gap-2 cursor-pointer">
+                    <FileText className="w-4 h-4" />
+                    Éditeur Portfolio
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/services" className="flex items-center gap-2 cursor-pointer">
+                    <ShoppingBag className="w-4 h-4" />
+                    Éditeur Services
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/orders" className="flex items-center gap-2 cursor-pointer">
+                    <Users className="w-4 h-4" />
+                    Suivi Clients
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/settings" className="flex items-center gap-2 cursor-pointer">
+                    <Sliders className="w-4 h-4" />
+                    Réglages
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </nav>
         <div className="hidden md:flex items-center gap-3">
@@ -154,14 +188,46 @@ const Header = () => {
               </Link>
             ))}
             {isAdmin && (
-              <Link
-                href="/admin/portfolio"
-                className="text-lg font-medium text-primary flex items-center gap-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Settings className="w-4 h-4" />
-                Portfolio Admin
-              </Link>
+              <>
+                <div className="text-lg font-medium text-primary flex items-center gap-2">
+                  <Settings className="w-4 h-4" />
+                  Portail Admin
+                </div>
+                <div className="flex flex-col gap-2 pl-6">
+                  <Link
+                    href="/admin/portfolio"
+                    className="text-sm font-medium text-foreground flex items-center gap-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <FileText className="w-4 h-4" />
+                    Éditeur Portfolio
+                  </Link>
+                  <Link
+                    href="/admin/services"
+                    className="text-sm font-medium text-foreground flex items-center gap-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    Éditeur Services
+                  </Link>
+                  <Link
+                    href="/admin/orders"
+                    className="text-sm font-medium text-foreground flex items-center gap-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Users className="w-4 h-4" />
+                    Suivi Clients
+                  </Link>
+                  <Link
+                    href="/admin/settings"
+                    className="text-sm font-medium text-foreground flex items-center gap-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Sliders className="w-4 h-4" />
+                    Réglages
+                  </Link>
+                </div>
+              </>
             )}
             {isAdmin ? (
               <Button

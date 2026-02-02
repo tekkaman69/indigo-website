@@ -18,6 +18,10 @@ export async function signIn(email: string, password: string) {
 export async function signOut() {
   try {
     await firebaseSignOut(auth);
+    // Clear auth cookie
+    if (typeof document !== 'undefined') {
+      document.cookie = 'auth-token=; path=/; max-age=0; samesite=strict';
+    }
     return { error: null };
   } catch (error) {
     return { error: error as Error };

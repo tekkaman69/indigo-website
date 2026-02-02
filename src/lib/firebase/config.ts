@@ -1,5 +1,5 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import { getAuth, Auth } from 'firebase/auth';
+import { getAuth, Auth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getStorage, FirebaseStorage } from 'firebase/storage';
 
@@ -20,6 +20,12 @@ let storage: FirebaseStorage;
 if (typeof window !== 'undefined') {
   app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
   auth = getAuth(app);
+
+  // Configure persistence explicitly for better reliability in production
+  setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error('Error setting auth persistence:', error);
+  });
+
   db = getFirestore(app);
   storage = getStorage(app);
 }

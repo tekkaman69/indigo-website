@@ -14,6 +14,17 @@ export async function uploadImage(
   return downloadURL;
 }
 
+/**
+ * Upload any file type to Firebase Storage
+ * Generic function that works for images, videos, documents, etc.
+ */
+export async function uploadFile(
+  file: File,
+  path: string
+): Promise<string> {
+  return uploadImage(file, path); // Same implementation
+}
+
 export async function deleteImage(path: string): Promise<void> {
   const storageRef = ref(storage, path);
   await deleteObject(storageRef);

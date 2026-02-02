@@ -35,11 +35,24 @@ function LoginForm() {
     }
 
     if (user) {
-      const token = await user.getIdToken();
-      document.cookie = `auth-token=${token}; path=/; max-age=3600; samesite=strict`;
+      try {
+        const token = await user.getIdToken();
+        // Set cookie for 7 days instead of 1 hour
+        document.cookie = `auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=strict; secure`;
 
-      const redirect = searchParams.get('redirect') || '/admin';
-      router.push(redirect);
+        const redirect = searchParams.get('redirect') || '/admin';
+        router.push(redirect);
+      } catch (error) {
+        console.error('Error getting token:', error);
+        toast({
+          title: 'Erreur',
+          description: 'Impossible de finaliser la connexion',
+          variant: 'destructive',
+        });
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(false);
     }
   };
 

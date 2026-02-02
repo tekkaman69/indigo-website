@@ -19,5 +19,42 @@ service cloud.firestore {
     match /contact-messages/{document=**} {
       allow read, write: if true;
     }
+
+    // Contacts (nouveau système)
+    match /contacts/{contactId} {
+      allow read, write: if true; // Temporaire - sécuriser plus tard
+    }
+
+    // Services - Marketplace
+    match /services/{serviceId} {
+      allow read: if true; // Lecture publique
+      allow create, update, delete: if true; // Temporaire - admin uniquement en prod
+    }
+
+    // Orders - Marketplace
+    match /orders/{orderId} {
+      allow read, write: if true; // Temporaire - sécuriser avec magicToken en prod
+    }
+
+    // Order Messages - Marketplace
+    match /order_messages/{messageId} {
+      allow read, write: if true; // Temporaire - sécuriser en prod
+    }
+
+    // Order Files - Marketplace
+    match /order_files/{fileId} {
+      allow read, write: if true; // Temporaire - sécuriser en prod
+    }
+
+    // Testimonials
+    match /testimonials/{testimonialId} {
+      allow read, write: if true; // Temporaire - admin uniquement en prod
+    }
+
+    // Site Settings - Configuration globale du site
+    match /site_settings/{settingId} {
+      allow read: if true; // Lecture publique (pour vérifier visibilité pages)
+      allow write: if true; // Temporaire - admin uniquement en prod
+    }
   }
 }

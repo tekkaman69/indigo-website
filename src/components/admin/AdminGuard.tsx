@@ -21,7 +21,7 @@ export function AdminGuard({ children }: AdminGuardProps) {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) {
         setAuthState('unauthenticated');
         router.push('/admin/login');
@@ -35,11 +35,36 @@ export function AdminGuard({ children }: AdminGuardProps) {
         return;
       }
 
+      // Refresh token to ensure it's valid
+      try {
+        const token = await currentUser.getIdToken(true); // Force refresh
+        document.cookie = `auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=strict; secure`;
+      } catch (error) {
+        console.error('Error refreshing token:', error);
+      }
+
       setAuthState('admin');
     });
 
     return () => unsubscribe();
   }, [router]);
+
+  // Auto-refresh token every 50 minutes
+  useEffect(() => {
+    if (authState !== 'admin' || !user) return;
+
+    const refreshInterval = setInterval(async () => {
+      try {
+        const token = await user.getIdToken(true);
+        document.cookie = `auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=strict; secure`;
+        console.log('Token refreshed successfully');
+      } catch (error) {
+        console.error('Failed to refresh token:', error);
+      }
+    }, 50 * 60 * 1000); // 50 minutes
+
+    return () => clearInterval(refreshInterval);
+  }, [authState, user]);
 
   const handleLogout = async () => {
     await signOut();

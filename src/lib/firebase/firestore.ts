@@ -21,7 +21,57 @@ export const COLLECTIONS = {
   PORTFOLIO: 'portfolio',
   TESTIMONIALS: 'testimonials',
   SERVICES: 'services',
+  SITE_SETTINGS: 'site_settings',
 } as const;
+
+// ============================================
+// SITE SETTINGS
+// ============================================
+
+export interface SiteSettings {
+  servicesPageEnabled: boolean;
+  updatedAt?: Date;
+}
+
+const DEFAULT_SETTINGS: SiteSettings = {
+  servicesPageEnabled: false, // Par défaut: page Services désactivée
+};
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  try {
+    const docRef = doc(db, COLLECTIONS.SITE_SETTINGS, 'main');
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as SiteSettings;
+    }
+
+    // Créer les settings par défaut si ils n'existent pas
+    await updateDoc(docRef, { ...DEFAULT_SETTINGS, updatedAt: Timestamp.now() }).catch(() => {
+      // Si updateDoc échoue (doc n'existe pas), on utilise setDoc
+      return addDoc(collection(db, COLLECTIONS.SITE_SETTINGS), { ...DEFAULT_SETTINGS, updatedAt: Timestamp.now() });
+    });
+
+    return DEFAULT_SETTINGS;
+  } catch (error) {
+    console.error('Error getting site settings:', error);
+    return DEFAULT_SETTINGS;
+  }
+}
+
+export async function updateSiteSettings(settings: Partial<SiteSettings>): Promise<void> {
+  try {
+    const { setDoc } = await import('firebase/firestore');
+    const docRef = doc(db, COLLECTIONS.SITE_SETTINGS, 'main');
+    await setDoc(docRef, {
+      ...settings,
+      updatedAt: Timestamp.now(),
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error updating site settings:', error);
+    throw error;
+  }
+}
 
 export async function addContactSubmission(data: Omit<ContactSubmission, 'id' | 'createdAt' | 'status'>) {
   const contactsRef = collection(db, COLLECTIONS.CONTACTS);
