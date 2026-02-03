@@ -68,9 +68,17 @@ async function sendViaResend(to: string, subject: string, html: string): Promise
   }
 }
 
-// Send email via SMTP (Nodemailer) - fallback method
+// Send email via SMTP (Nodemailer/Brevo)
 async function sendViaSMTP(to: string, subject: string, html: string): Promise<boolean> {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return false;
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    console.log('❌ SMTP not configured (missing SMTP_USER or SMTP_PASS)');
+    return false;
+  }
+
+  console.log('📧 Attempting SMTP send...');
+  console.log('   Host:', process.env.SMTP_HOST);
+  console.log('   From:', process.env.SMTP_FROM);
+  console.log('   To:', to);
 
   try {
     const nodemailer = await import('nodemailer');
@@ -85,7 +93,7 @@ async function sendViaSMTP(to: string, subject: string, html: string): Promise<b
       },
     });
 
-    await transporter.sendMail({
+    const result = await transporter.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to,
       subject,
@@ -93,9 +101,13 @@ async function sendViaSMTP(to: string, subject: string, html: string): Promise<b
     });
 
     console.log('✅ Email sent via SMTP to:', to);
+    console.log('   Message ID:', result.messageId);
     return true;
-  } catch (error) {
-    console.error('SMTP send error:', error);
+  } catch (error: any) {
+    console.error('❌ SMTP send error:', error.message || error);
+    if (error.response) {
+      console.error('   SMTP Response:', error.response);
+    }
     return false;
   }
 }
@@ -208,21 +220,26 @@ export async function POST(request: NextRequest) {
 
     // Try to send email via available methods
     let emailSent = false;
+    console.log('📬 Sending email to:', recipientEmail);
 
-    // Method 1: Try Resend (recommended for Vercel)
+    // Method 1: Try Resend (if configured)
     if (!emailSent && process.env.RESEND_API_KEY) {
+      console.log('🔄 Trying Resend API...');
       emailSent = await sendViaResend(recipientEmail, subject, html);
     }
 
-    // Method 2: Try SMTP as fallback
+    // Method 2: Try SMTP (Brevo)
     if (!emailSent && process.env.SMTP_USER) {
+      console.log('🔄 Trying SMTP (Brevo)...');
       emailSent = await sendViaSMTP(recipientEmail, subject, html);
     }
 
     // Log email status
     if (!emailSent) {
-      console.warn('⚠️ Email NOT sent - configure RESEND_API_KEY or SMTP in .env.local');
-      console.warn('Message stored in Firestore with ID:', firestoreId);
+      console.warn('⚠️ Email NOT sent - check configuration');
+      console.warn('   Firestore ID:', firestoreId);
+    } else {
+      console.log('✅ Email successfully sent!');
     }
 
     // Always return success if we got here
