@@ -35,15 +35,15 @@ export function AdminGuard({ children }: AdminGuardProps) {
         return;
       }
 
-      // Refresh token to ensure it's valid
-      try {
-        const token = await currentUser.getIdToken(true); // Force refresh
-        document.cookie = `auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=strict; secure`;
-      } catch (error) {
-        console.error('Error refreshing token:', error);
-      }
-
+      // Set admin state immediately so UI doesn't stay in loading
       setAuthState('admin');
+
+      // Refresh token in background (non-blocking)
+      currentUser.getIdToken(true).then((token) => {
+        document.cookie = `auth-token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=strict; secure`;
+      }).catch((error) => {
+        console.error('Error refreshing token:', error);
+      });
     });
 
     return () => unsubscribe();

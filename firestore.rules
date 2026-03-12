@@ -56,5 +56,16 @@ service cloud.firestore {
       allow read: if true; // Lecture publique (pour vérifier visibilité pages)
       allow write: if true; // Temporaire - admin uniquement en prod
     }
+
+    // Formulas - Services & tarifs affichés sur la landing
+    match /formulas/{formulaId} {
+      allow read: if true;  // Lecture publique (landing page)
+      allow write: if true; // Temporaire - admin uniquement en prod
+    }
+
+    // Order Intentions - Checkout acompte
+    match /order_intentions/{intentionId} {
+      allow read, write: if true; // Temporaire - sécuriser en prod
+    }
   }
 }

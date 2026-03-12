@@ -9,12 +9,13 @@ import {
   query,
   where,
   orderBy,
+  limit,
   Timestamp,
   CollectionReference,
   DocumentData
 } from 'firebase/firestore';
 import { db } from './config';
-import type { ContactSubmission, PortfolioItem } from '@/types/firebase';
+import type { ContactSubmission, PortfolioItem, OrderIntention } from '@/types/firebase';
 
 export const COLLECTIONS = {
   CONTACTS: 'contacts',
@@ -22,6 +23,7 @@ export const COLLECTIONS = {
   TESTIMONIALS: 'testimonials',
   SERVICES: 'services',
   SITE_SETTINGS: 'site_settings',
+  ORDER_INTENTIONS: 'order_intentions',
 } as const;
 
 // ============================================
@@ -93,6 +95,32 @@ export async function getPortfolioItems() {
   })) as PortfolioItem[];
 }
 
+export async function getFeaturedPortfolioItems(): Promise<PortfolioItem[]> {
+  try {
+    const portfolioRef = collection(db, COLLECTIONS.PORTFOLIO);
+    // Tenter une requête combinée (nécessite un index Firestore)
+    const q = query(
+      portfolioRef,
+      where('published', '==', true),
+      where('featured', '==', true),
+      orderBy('order', 'asc'),
+      limit(6)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as PortfolioItem[];
+  } catch {
+    // Fallback: récupérer tous les items et filtrer côté client
+    // (utile si l'index Firestore n'est pas encore créé)
+    const portfolioRef = collection(db, COLLECTIONS.PORTFOLIO);
+    const snapshot = await getDocs(portfolioRef);
+    const all = snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as PortfolioItem[];
+    return all
+      .filter(item => item.published !== false && item.featured === true)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+      .slice(0, 6);
+  }
+}
+
 export async function getPortfolioItemById(id: string) {
   const docRef = doc(db, COLLECTIONS.PORTFOLIO, id);
   const docSnap = await getDoc(docRef);
@@ -130,4 +158,43 @@ export async function addPortfolioItem(data: Omit<PortfolioItem, 'id'>) {
     createdAt: Timestamp.now(),
   });
   return docRef.id;
+}
+
+// ============================================
+// ORDER INTENTIONS (checkout acompte)
+// ============================================
+
+export async function createOrderIntention(
+  data: Omit<OrderIntention, 'id' | 'createdAt'>
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.ORDER_INTENTIONS);
+  const docRef = await addDoc(ref, {
+    ...data,
+    createdAt: Timestamp.now(),
+  });
+  return docRef.id;
+}
+
+export async function updateOrderIntention(
+  id: string,
+  data: Partial<Omit<OrderIntention, 'id' | 'createdAt'>>
+): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.ORDER_INTENTIONS, id);
+  const cleanData = Object.entries({ ...data, updatedAt: Timestamp.now() }).reduce(
+    (acc, [key, value]) => {
+      if (value !== undefined) acc[key] = value;
+      return acc;
+    },
+    {} as Record<string, unknown>
+  );
+  await updateDoc(docRef, cleanData as DocumentData);
+}
+
+export async function getOrderIntentionById(id: string): Promise<OrderIntention | null> {
+  const docRef = doc(db, COLLECTIONS.ORDER_INTENTIONS, id);
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    return { id: snap.id, ...snap.data() } as OrderIntention;
+  }
+  return null;
 }

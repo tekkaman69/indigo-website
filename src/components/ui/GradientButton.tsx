@@ -15,15 +15,15 @@ const GradientButton = ({
   ...props
 }: GradientButtonProps) => {
   const commonClasses = cn(
-    'relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 rounded-lg group',
+    'relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 rounded-full group overflow-hidden',
     className
   );
 
   const content = (
     <>
-      <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary via-accent to-cyan-400 opacity-75 blur transition-all duration-300 group-hover:opacity-100 group-hover:blur-md"></div>
-      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary to-accent"></div>
-      <span className="relative">{children}</span>
+      <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-primary via-accent to-cyan-400 opacity-70 blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:blur-md"></div>
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-accent"></div>
+      <span className="relative inline-flex items-center gap-1.5 whitespace-nowrap">{children}</span>
     </>
   );
 

@@ -51,14 +51,39 @@ export interface PortfolioItem {
   title: string;
   description: string;
   category: string;
+  categories?: string[];
   date: string;
   imageUrl: string;
+  coverImage?: { url: string; path?: string };
   coverPosition?: string;
   tags: string[];
   featured: boolean;
+  published: boolean;
+  order: number;
+  // Champs contextualisés pour la landing
+  industry?: string;
+  problem?: string;
+  solution?: string;
+  result?: string;
   createdAt: Timestamp;
   updatedAt?: Timestamp;
   // New structured editor data
   sections?: any[]; // Will be typed as Section[] from portfolio-editor
   version?: number;
+}
+
+export interface OrderIntention {
+  id: string;
+  offerId: string;
+  offerLabel: string;
+  totalPrice: number;
+  depositAmount: number;
+  clientName: string;
+  clientEmail: string;
+  clientCompany?: string;
+  clientDescription?: string;
+  status: 'pending' | 'paid' | 'failed';
+  lemonOrderId?: string;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
 }

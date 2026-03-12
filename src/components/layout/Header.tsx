@@ -3,16 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Menu, X, LogIn, Settings, LogOut, FileText, ShoppingBag, Users, Sliders } from 'lucide-react';
+import { Menu, X, LogIn, Settings, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import GradientButton from '../ui/GradientButton';
 import { Button } from '../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 import { auth } from '@/lib/firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { isAdminUid } from '@/lib/admin';
@@ -23,8 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 const navItems = [
   { name: 'Accueil', href: '/' },
   { name: 'Portfolio', href: '/portfolio' },
-  { name: 'Services', href: '/services' },
-  { name: 'Contact', href: '/contact' },
 ];
 
 const Header = () => {
@@ -35,38 +27,24 @@ const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && isAdminUid(user.uid)) {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
+      setIsAdmin(!!(user && isAdminUid(user.uid)));
     });
-
     return () => unsubscribe();
   }, []);
 
   const handleLogout = async () => {
     const { error } = await signOut();
     if (error) {
-      toast({
-        title: 'Erreur',
-        description: 'Impossible de se déconnecter',
-        variant: 'destructive',
-      });
+      toast({ title: 'Erreur', description: 'Impossible de se déconnecter', variant: 'destructive' });
     } else {
-      toast({
-        title: 'Déconnexion réussie',
-        description: 'À bientôt !',
-      });
+      toast({ title: 'Déconnexion réussie', description: 'À bientôt !' });
       router.push('/');
     }
   };
@@ -81,11 +59,14 @@ const Header = () => {
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
+        {/* Logo */}
         <Link href="/" className="text-2xl font-bold tracking-tighter">
           <span className="bg-gradient-to-r from-primary via-accent to-cyan-400 bg-clip-text text-transparent">
             Indigo
           </span>
         </Link>
+
+        {/* Nav desktop */}
         <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <Link
@@ -97,64 +78,34 @@ const Header = () => {
             </Link>
           ))}
           {isAdmin && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
-                  <Settings className="w-4 h-4" />
-                  Portail Admin
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/portfolio" className="flex items-center gap-2 cursor-pointer">
-                    <FileText className="w-4 h-4" />
-                    Éditeur Portfolio
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/services" className="flex items-center gap-2 cursor-pointer">
-                    <ShoppingBag className="w-4 h-4" />
-                    Éditeur Services
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/orders" className="flex items-center gap-2 cursor-pointer">
-                    <Users className="w-4 h-4" />
-                    Suivi Clients
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/settings" className="flex items-center gap-2 cursor-pointer">
-                    <Sliders className="w-4 h-4" />
-                    Réglages
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link
+              href="/admin"
+              className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1.5"
+            >
+              <Settings className="w-4 h-4" />
+              Portail Admin
+            </Link>
           )}
         </nav>
+
+        {/* Actions desktop */}
         <div className="hidden md:flex items-center gap-3">
           {isAdmin ? (
             <Button
               onClick={handleLogout}
               variant="ghost"
               size="sm"
-              className="gap-2"
+              className="gap-2 text-white/60 hover:text-white"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
               Indigo
               <LogOut className="w-4 h-4" />
             </Button>
           ) : (
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="gap-2"
-            >
+            <Button asChild variant="ghost" size="sm" className="gap-2">
               <Link href="/admin/login">
                 <LogIn className="w-4 h-4" />
                 Admin
@@ -163,12 +114,16 @@ const Header = () => {
           )}
           <GradientButton href="/contact">Demander un devis</GradientButton>
         </div>
+
+        {/* Burger mobile */}
         <div className="md:hidden">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
       </div>
+
+      {/* Menu mobile */}
       {isMenuOpen && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -188,70 +143,32 @@ const Header = () => {
               </Link>
             ))}
             {isAdmin && (
-              <>
-                <div className="text-lg font-medium text-primary flex items-center gap-2">
-                  <Settings className="w-4 h-4" />
-                  Portail Admin
-                </div>
-                <div className="flex flex-col gap-2 pl-6">
-                  <Link
-                    href="/admin/portfolio"
-                    className="text-sm font-medium text-foreground flex items-center gap-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <FileText className="w-4 h-4" />
-                    Éditeur Portfolio
-                  </Link>
-                  <Link
-                    href="/admin/services"
-                    className="text-sm font-medium text-foreground flex items-center gap-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    Éditeur Services
-                  </Link>
-                  <Link
-                    href="/admin/orders"
-                    className="text-sm font-medium text-foreground flex items-center gap-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Users className="w-4 h-4" />
-                    Suivi Clients
-                  </Link>
-                  <Link
-                    href="/admin/settings"
-                    className="text-sm font-medium text-foreground flex items-center gap-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Sliders className="w-4 h-4" />
-                    Réglages
-                  </Link>
-                </div>
-              </>
+              <Link
+                href="/admin"
+                className="text-lg font-medium text-primary flex items-center gap-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Settings className="w-4 h-4" />
+                Portail Admin
+              </Link>
             )}
             {isAdmin ? (
               <Button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  handleLogout();
-                }}
+                onClick={() => { setIsMenuOpen(false); handleLogout(); }}
                 variant="ghost"
                 size="sm"
                 className="gap-2"
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                 </span>
                 Indigo
                 <LogOut className="w-4 h-4" />
               </Button>
             ) : (
               <Button
-                asChild
-                variant="ghost"
-                size="sm"
-                className="gap-2"
+                asChild variant="ghost" size="sm" className="gap-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Link href="/admin/login">

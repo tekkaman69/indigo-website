@@ -1,10 +1,11 @@
-import ContactCta from '@/components/home/ContactCta';
 import Hero from '@/components/home/Hero';
-import FeaturedWork from '@/components/home/FeaturedWork';
-import FounderSection from '@/components/home/FounderSection';
-import Process from '@/components/home/Process';
-import Services from '@/components/home/Services';
+import ProblemSection from '@/components/home/ProblemSection';
+import MethodSection from '@/components/home/MethodSection';
+import ServicesSection from '@/components/home/ServicesSection';
+import PortfolioSection from '@/components/home/PortfolioSection';
 import Testimonials from '@/components/home/Testimonials';
+import FAQSection from '@/components/home/FAQSection';
+import FinalCTASection from '@/components/home/FinalCTASection';
 import Template from './template';
 
 export default function Home() {
@@ -12,12 +13,13 @@ export default function Home() {
     <Template>
       <div className="flex flex-col items-center">
         <Hero />
-        <Services />
-        <FeaturedWork />
-        <FounderSection />
-        <Process />
+        <ProblemSection />
+        <MethodSection />
+        <ServicesSection />
+        <PortfolioSection />
         <Testimonials />
-        <ContactCta />
+        <FAQSection />
+        <FinalCTASection />
       </div>
     </Template>
   );

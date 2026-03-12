@@ -8,8 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import GradientButton from '@/components/ui/GradientButton';
-import { useToast } from '@/hooks/use-toast';
 import Template from '../../template';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -24,34 +24,23 @@ export default function AdminLoginPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-
-      toast({
-        title: 'Connexion réussie',
-        description: 'Redirection vers le dashboard...',
-      });
-
-      router.push('/admin');
-    } catch (error: any) {
+      router.replace('/admin');
+    } catch (error: unknown) {
       console.error('Login error:', error);
 
+      const code = (error as { code?: string }).code;
       let errorMessage = 'Une erreur est survenue.';
-
-      if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+      if (code === 'auth/invalid-credential' || code === 'auth/wrong-password') {
         errorMessage = 'Email ou mot de passe incorrect.';
-      } else if (error.code === 'auth/user-not-found') {
+      } else if (code === 'auth/user-not-found') {
         errorMessage = 'Aucun compte trouvé avec cet email.';
-      } else if (error.code === 'auth/too-many-requests') {
+      } else if (code === 'auth/too-many-requests') {
         errorMessage = 'Trop de tentatives. Réessayez plus tard.';
-      } else if (error.code === 'auth/network-request-failed') {
-        errorMessage = 'Erreur de connexion. Vérifiez votre configuration Firebase.';
+      } else if (code === 'auth/network-request-failed') {
+        errorMessage = 'Erreur de connexion. Vérifiez votre réseau.';
       }
 
-      toast({
-        title: 'Erreur de connexion',
-        description: errorMessage,
-        variant: 'destructive',
-      });
-
+      toast({ title: 'Erreur de connexion', description: errorMessage, variant: 'destructive' });
       setIsLoading(false);
     }
   };
@@ -93,15 +82,10 @@ export default function AdminLoginPage() {
                   disabled={isLoading}
                 />
               </div>
-              <GradientButton
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Connexion en cours...' : 'Se connecter'}
+              <GradientButton type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Connexion...' : 'Se connecter'}
               </GradientButton>
             </form>
-
             <div className="mt-6 pt-6 border-t border-white/10">
               <p className="text-xs text-muted-foreground text-center">
                 ⚠️ Accès réservé aux administrateurs autorisés uniquement

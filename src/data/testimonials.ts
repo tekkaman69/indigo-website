@@ -1,23 +1,35 @@
 export interface Testimonial {
   name: string;
+  role?: string;
   company: string;
   quote: string;
+  rating?: number;
+  featured?: boolean;
 }
 
 export const testimonials: Testimonial[] = [
   {
-    name: 'Sarah L.',
-    company: 'CEO, TechNova',
-    quote: 'L\'équipe d\'Indigo a complètement transformé notre présence en ligne. Leur expertise en automatisation nous a fait gagner un temps précieux.',
+    name: 'Emmanuel D.',
+    role: 'CEO',
+    company: 'Suteki',
+    quote: 'Indigo a livré bien au-delà de nos attentes. La plateforme en ligne est fluide, moderne et parfaitement représentative de notre univers. La direction artistique couvre tous nos projets avec une cohérence impressionnante — chaque visuel raconte notre histoire. Un partenaire de confiance que je recommande sans hésiter.',
+    rating: 5,
+    featured: true,
   },
   {
-    name: 'Julien M.',
-    company: 'Fondateur, Éco-Logis',
-    quote: 'La campagne vidéo UGC a été un succès retentissant. Authentique, percutante et parfaitement alignée avec nos valeurs.',
+    name: 'Cassandra T.',
+    role: 'CEO',
+    company: 'Paideia',
+    quote: 'Travailler avec Indigo pour notre plateforme éducative a été une expérience remarquable. Ils ont saisi dès le départ l\'ambition pédagogique de Paideia et l\'ont traduite en une interface claire, engageante et à l\'identité visuelle forte. Résultat : nos apprenants s\'y retrouvent immédiatement et nos partenaires institutionnels prennent confiance dès le premier regard.',
+    rating: 5,
+    featured: true,
   },
   {
-    name: 'Chloé D.',
-    company: 'Artiste Indépendante',
-    quote: 'Mon nouveau branding est juste incroyable. Ils ont su capturer l\'essence de mon art et le traduire en une identité visuelle forte.',
+    name: 'Claude C.',
+    role: 'Gérante & Propriétaire',
+    company: 'Chez Claudie',
+    quote: 'Mon site de présentation et de réservation pour l\'hébergement a tout changé. Les clients peuvent désormais découvrir l\'établissement en quelques secondes et réserver directement en ligne. Indigo a su capturer l\'âme chaleureuse de "Chez Claudie" — simple, élégant, efficace. Je reçois des compliments sur le site aussi souvent que sur les chambres !',
+    rating: 5,
+    featured: true,
   },
 ];
