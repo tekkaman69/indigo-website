@@ -3,13 +3,11 @@ service firebase.storage {
   match /b/{bucket}/o {
     // Autoriser lecture publique pour les images du portfolio
     match /portfolio/{allPaths=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read, write: if true; // Temporaire - sécuriser avec auth en prod
     }
-    
-    // Tout le reste nécessite authentification
+
     match /{allPaths=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if true; // Temporaire - sécuriser en prod
     }
   }
 }

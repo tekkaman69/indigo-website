@@ -29,6 +29,9 @@ const emptyForm = {
   problem: '',
   solution: '',
   result: '',
+  type: 'graphisme' as 'graphisme' | 'web',
+  url: '',
+  webFeatured: false,
 };
 
 export default function AdminPortfolioPage() {
@@ -98,6 +101,9 @@ export default function AdminPortfolioPage() {
       problem: project.problem ?? '',
       solution: project.solution ?? '',
       result: project.result ?? '',
+      type: (project.type ?? 'graphisme') as 'graphisme' | 'web',
+      url: project.url ?? '',
+      webFeatured: project.webFeatured ?? false,
     });
     setImagePreview(project.imageUrl);
     setShowForm(true);
@@ -124,9 +130,14 @@ export default function AdminPortfolioPage() {
       let imageUrl = formData.imageUrl;
 
       if (imageFile) {
-        const fileName = generateUniqueFileName(imageFile.name);
-        const path = `portfolio/${fileName}`;
-        imageUrl = await uploadImage(imageFile, path);
+        try {
+          const fileName = generateUniqueFileName(imageFile.name);
+          const path = `portfolio/${fileName}`;
+          imageUrl = await uploadImage(imageFile, path);
+        } catch (uploadError) {
+          console.error('Storage upload failed:', uploadError);
+          toast({ title: 'Avertissement', description: 'Upload image échoué — projet enregistré sans image. Vérifiez les règles Firebase Storage.', variant: 'destructive' });
+        }
       }
 
       const tags = formData.tags.split(',').map(t => t.trim()).filter(t => t.length > 0);
@@ -145,6 +156,9 @@ export default function AdminPortfolioPage() {
         problem: formData.problem || undefined,
         solution: formData.solution || undefined,
         result: formData.result || undefined,
+        type: formData.type,
+        url: formData.url || undefined,
+        webFeatured: formData.webFeatured,
       };
 
       if (editingProject) {
@@ -158,8 +172,9 @@ export default function AdminPortfolioPage() {
       resetForm();
       loadProjects();
     } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
       console.error('Error submitting project:', error);
-      toast({ title: 'Erreur', description: 'Une erreur est survenue lors de l\'enregistrement', variant: 'destructive' });
+      toast({ title: 'Erreur', description: msg || 'Une erreur est survenue lors de l\'enregistrement', variant: 'destructive' });
     } finally {
       setIsSubmitting(false);
     }
@@ -283,6 +298,39 @@ export default function AdminPortfolioPage() {
                       <Input id="tags" placeholder="Next.js, Branding, Figma" {...field('tags')} disabled={isSubmitting} />
                     </div>
 
+                    {/* Type de projet */}
+                    <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4 space-y-4">
+                      <p className="text-sm font-medium text-cyan-400">Type de projet</p>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <Label htmlFor="type">Catégorie</Label>
+                          <select
+                            id="type"
+                            value={formData.type}
+                            onChange={(e) => setFormData({ ...formData, type: e.target.value as 'graphisme' | 'web' })}
+                            disabled={isSubmitting}
+                            className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          >
+                            <option value="graphisme">Graphisme</option>
+                            <option value="web">Web</option>
+                          </select>
+                        </div>
+                        {formData.type === 'web' && (
+                          <div className="space-y-1.5">
+                            <Label htmlFor="url">URL du site (lien externe)</Label>
+                            <Input
+                              id="url"
+                              type="url"
+                              placeholder="https://client.com"
+                              value={formData.url}
+                              onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+                              disabled={isSubmitting}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     {/* Toggles */}
                     <div className="flex flex-wrap gap-6">
                       <label className="flex items-center gap-2 cursor-pointer">
@@ -293,8 +341,20 @@ export default function AdminPortfolioPage() {
                           className="w-4 h-4 rounded"
                           disabled={isSubmitting}
                         />
-                        <span className="text-sm">En vedette (featured)</span>
+                        <span className="text-sm">En vedette graphisme (landing)</span>
                       </label>
+                      {formData.type === 'web' && (
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.webFeatured}
+                            onChange={(e) => setFormData({ ...formData, webFeatured: e.target.checked })}
+                            className="w-4 h-4 rounded"
+                            disabled={isSubmitting}
+                          />
+                          <span className="text-sm">En vedette web (landing)</span>
+                        </label>
+                      )}
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
@@ -303,7 +363,7 @@ export default function AdminPortfolioPage() {
                           className="w-4 h-4 rounded"
                           disabled={isSubmitting}
                         />
-                        <span className="text-sm">Publié (visible sur la landing)</span>
+                        <span className="text-sm">Publié (visible)</span>
                       </label>
                     </div>
 
@@ -348,9 +408,19 @@ export default function AdminPortfolioPage() {
                         )}
                         {/* Badges */}
                         <div className="absolute top-2 left-2 flex flex-wrap gap-1.5">
+                          {project.type === 'web' && (
+                            <span className="px-2 py-0.5 bg-cyan-600/80 backdrop-blur-sm rounded text-xs font-medium text-white">
+                              Web
+                            </span>
+                          )}
                           {project.featured && (
                             <span className="px-2 py-0.5 bg-primary/90 backdrop-blur-sm rounded text-xs font-medium text-white">
-                              En vedette
+                              Vedette
+                            </span>
+                          )}
+                          {project.webFeatured && (
+                            <span className="px-2 py-0.5 bg-cyan-500/80 backdrop-blur-sm rounded text-xs font-medium text-white">
+                              Web vedette
                             </span>
                           )}
                           <span className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium backdrop-blur-sm ${project.published !== false ? 'bg-green-600/80 text-white' : 'bg-gray-700/80 text-white/70'}`}>
@@ -375,6 +445,11 @@ export default function AdminPortfolioPage() {
                       <CardContent>
                         {project.result && (
                           <p className="text-xs text-green-400 mb-3 line-clamp-1 font-medium">↑ {project.result}</p>
+                        )}
+                        {project.url && (
+                          <a href={project.url} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-400 hover:underline mb-2 block truncate" onClick={(e) => e.stopPropagation()}>
+                            ↗ {project.url}
+                          </a>
                         )}
                         <div className="flex flex-wrap gap-2">
                           <Button

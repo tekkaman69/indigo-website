@@ -3,6 +3,7 @@ import ProblemSection from '@/components/home/ProblemSection';
 import MethodSection from '@/components/home/MethodSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
+import WebPortfolioSection from '@/components/home/WebPortfolioSection';
 import Testimonials from '@/components/home/Testimonials';
 import FAQSection from '@/components/home/FAQSection';
 import FinalCTASection from '@/components/home/FinalCTASection';
@@ -17,6 +18,7 @@ export default function Home() {
         <MethodSection />
         <ServicesSection />
         <PortfolioSection />
+        <WebPortfolioSection />
         <Testimonials />
         <FAQSection />
         <FinalCTASection />

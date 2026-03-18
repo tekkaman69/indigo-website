@@ -121,6 +121,29 @@ export async function getFeaturedPortfolioItems(): Promise<PortfolioItem[]> {
   }
 }
 
+export async function getFeaturedWebPortfolioItems(): Promise<PortfolioItem[]> {
+  try {
+    const portfolioRef = collection(db, COLLECTIONS.PORTFOLIO);
+    const q = query(
+      portfolioRef,
+      where('published', '==', true),
+      where('webFeatured', '==', true),
+      orderBy('order', 'asc'),
+      limit(6)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as PortfolioItem[];
+  } catch {
+    const portfolioRef = collection(db, COLLECTIONS.PORTFOLIO);
+    const snapshot = await getDocs(portfolioRef);
+    const all = snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as PortfolioItem[];
+    return all
+      .filter(item => item.published !== false && item.webFeatured === true)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+      .slice(0, 6);
+  }
+}
+
 export async function getPortfolioItemById(id: string) {
   const docRef = doc(db, COLLECTIONS.PORTFOLIO, id);
   const docSnap = await getDoc(docRef);
@@ -153,8 +176,13 @@ export async function deletePortfolioItem(id: string) {
 
 export async function addPortfolioItem(data: Omit<PortfolioItem, 'id'>) {
   const portfolioRef = collection(db, COLLECTIONS.PORTFOLIO);
+  // Filtrer les undefined (Firestore les rejette)
+  const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
   const docRef = await addDoc(portfolioRef, {
-    ...data,
+    ...cleanData,
     createdAt: Timestamp.now(),
   });
   return docRef.id;

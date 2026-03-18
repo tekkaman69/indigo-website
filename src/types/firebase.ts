@@ -67,6 +67,12 @@ export interface PortfolioItem {
   result?: string;
   createdAt: Timestamp;
   updatedAt?: Timestamp;
+  // Type de projet
+  type?: 'graphisme' | 'web';
+  // URL externe (projets web uniquement)
+  url?: string;
+  // Mise en avant section web landing
+  webFeatured?: boolean;
   // New structured editor data
   sections?: any[]; // Will be typed as Section[] from portfolio-editor
   version?: number;

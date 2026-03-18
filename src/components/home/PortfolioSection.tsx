@@ -132,12 +132,12 @@ export default function PortfolioSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12 max-w-2xl mx-auto"
         >
-          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Résultats prouvés</p>
+          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Identité visuelle & branding</p>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Des preuves, pas des promesses
+            Nos réalisations graphiques
           </h2>
           <p className="mt-4 text-white/50 text-lg">
-            Chaque projet raconte une transformation réelle — problème, solution, résultat mesurable.
+            Logos, chartes graphiques, supports de communication — chaque projet raconte une transformation réelle.
           </p>
         </motion.div>
 
