@@ -1,4 +1,5 @@
 import Hero from '@/components/home/Hero';
+import ComparisonSection from '@/components/home/ComparisonSection';
 import DualProcess from '@/components/home/DualProcess';
 import ServicesSection from '@/components/home/ServicesSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
@@ -13,6 +14,7 @@ export default function Home() {
     <Template>
       <div className="flex flex-col items-center">
         <Hero />
+        <ComparisonSection />
         <DualProcess />
         <ServicesSection />
         <PortfolioSection />
