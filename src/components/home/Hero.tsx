@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { Balancer } from 'react-wrap-balancer';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import GradientButton from '../ui/GradientButton';
 import { Button } from '../ui/button';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import { ArrowRight, TrendingUp } from 'lucide-react';
 
 function BrandCard() {
   return (
-    <div className="w-[210px] rounded-2xl border border-white/10 bg-gray-950/90 backdrop-blur-xl p-5 shadow-2xl shadow-black/50">
+    <div className="w-[250px] rounded-2xl border border-white/10 bg-gray-950/90 backdrop-blur-xl p-6 shadow-2xl shadow-black/50">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 flex-shrink-0">
           <span className="text-white font-black text-sm tracking-tight">IN</span>
@@ -44,7 +44,7 @@ function BrandCard() {
 
 function WebCard() {
   return (
-    <div className="w-[252px] rounded-2xl border border-white/10 bg-gray-950/90 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/50">
+    <div className="w-[290px] rounded-2xl border border-white/10 bg-gray-950/90 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/50">
       <div className="h-7 bg-white/5 border-b border-white/8 flex items-center px-3 gap-1.5">
         <div className="w-2 h-2 rounded-full bg-rose-400/50" />
         <div className="w-2 h-2 rounded-full bg-yellow-400/50" />
@@ -76,7 +76,7 @@ function WebCard() {
 
 function SocialCard() {
   return (
-    <div className="w-[160px] h-[160px] rounded-2xl border border-white/10 overflow-hidden relative shadow-2xl shadow-black/50">
+    <div className="w-[190px] h-[190px] rounded-2xl border border-white/10 overflow-hidden relative shadow-2xl shadow-black/50">
       <div className="absolute inset-0 bg-gradient-to-br from-violet-900/70 via-indigo-800/50 to-gray-950" />
       <div className="absolute inset-0 p-4 flex flex-col justify-between">
         <div className="flex items-center gap-2">
@@ -100,7 +100,7 @@ function SocialCard() {
 function DashCard() {
   const bars = [30, 48, 42, 65, 55, 78, 70, 88];
   return (
-    <div className="w-[230px] rounded-2xl border border-white/10 bg-gray-950/90 backdrop-blur-xl p-5 shadow-2xl shadow-black/50">
+    <div className="w-[265px] rounded-2xl border border-white/10 bg-gray-950/90 backdrop-blur-xl p-6 shadow-2xl shadow-black/50">
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-[10px] text-white/40 uppercase tracking-widest mb-0.5">Growth</p>
@@ -151,8 +151,11 @@ const floatVariants = (duration: number, yRange: number, rotRange: number) => ({
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  // Spring smoothing — stiffness basse = mouvement lent et fluide, sans tremblements
+  const mouseX = useSpring(rawX, { stiffness: 40, damping: 25, mass: 1 });
+  const mouseY = useSpring(rawY, { stiffness: 40, damping: 25, mass: 1 });
 
   const p1x = useTransform(mouseX, [-1, 1], [-10, 10]);
   const p1y = useTransform(mouseY, [-1, 1], [-10, 10]);
@@ -166,8 +169,8 @@ const Hero = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    mouseX.set(((e.clientX - rect.left) / rect.width - 0.5) * 2);
-    mouseY.set(((e.clientY - rect.top) / rect.height - 0.5) * 2);
+    rawX.set(((e.clientX - rect.left) / rect.width - 0.5) * 2);
+    rawY.set(((e.clientY - rect.top) / rect.height - 0.5) * 2);
   };
 
   return (
@@ -299,8 +302,6 @@ const Hero = () => {
               <DashCard />
             </motion.div>
 
-            {/* Glow sous les cards */}
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
           </div>
         </div>
       </div>
