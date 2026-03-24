@@ -226,7 +226,7 @@ const Hero = () => {
             <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1] mb-6">
               <Balancer>
                 Votre marque, votre site, votre contenu —{' '}
-                <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary via-accent to-cyan-400 bg-clip-text text-transparent">
                   construits pour croître
                 </span>
               </Balancer>
