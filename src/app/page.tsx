@@ -1,6 +1,5 @@
 import Hero from '@/components/home/Hero';
-import ProblemSection from '@/components/home/ProblemSection';
-import MethodSection from '@/components/home/MethodSection';
+import DualProcess from '@/components/home/DualProcess';
 import ServicesSection from '@/components/home/ServicesSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
 import WebPortfolioSection from '@/components/home/WebPortfolioSection';
@@ -14,8 +13,7 @@ export default function Home() {
     <Template>
       <div className="flex flex-col items-center">
         <Hero />
-        <ProblemSection />
-        <MethodSection />
+        <DualProcess />
         <ServicesSection />
         <PortfolioSection />
         <WebPortfolioSection />
