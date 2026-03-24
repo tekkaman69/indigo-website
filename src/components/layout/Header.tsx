@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 
 const navItems = [
   { name: 'Accueil', href: '/' },
+  { name: 'Pourquoi Indigo', href: '/#pourquoi' },
+  { name: 'Comment ça marche', href: '/#methode' },
   { name: 'Portfolio', href: '/portfolio' },
 ];
 

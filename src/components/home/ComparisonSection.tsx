@@ -128,7 +128,7 @@ export default function ComparisonSection() {
   const current = COMPARISONS.find(c => c.id === active)!;
 
   return (
-    <section className="w-full py-20 md:py-28">
+    <section id="pourquoi" className="w-full py-20 md:py-28">
       <div className="container mx-auto px-6">
 
         {/* Header */}
