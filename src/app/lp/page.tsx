@@ -403,11 +403,12 @@ function TestimonialsSection() {
 // ─── 5. OFFRE ────────────────────────────────────────────────────────────────
 
 const OFFERS = [
-  { label: 'Branding essentiel',      price: '490€',      detail: 'Logo, couleurs, typographie' },
-  { label: 'Branding complet',        price: '790€',      detail: 'Identité visuelle + charte complète' },
-  { label: 'Site vitrine',            price: '790€',      detail: 'Design + développement + SEO' },
-  { label: 'Site + Branding',         price: '1 190€',    detail: 'Offre phare — le système complet', highlight: true },
-  { label: 'Contenu social',          price: 'dès 290€',  detail: 'Publications/mois, alignées à votre brand', unit: '/mois' },
+  { label: 'Branding essentiel',  price: '490€',      detail: 'Logo, couleurs, typographie, charte simplifiée' },
+  { label: 'Branding complet',    price: '790€',      detail: 'Essentiel + templates réseaux, mockups, fichiers sources' },
+  { label: 'Site vitrine',        price: '790€',      detail: 'Design + développement + SEO' },
+  { label: 'App dynamique',       price: '1 490€',    detail: 'Site interactif avec espace client ou fonctions avancées' },
+  { label: 'Site + Branding',     price: '1 190€',    detail: 'Offre phare — branding essentiel + site vitrine (90€ offerts)', highlight: true },
+  { label: 'Contenu social',      price: 'dès 290€',  detail: '4 à 8 publications/mois, alignées à votre image', unit: '/mois' },
 ];
 
 function OfferSection() {

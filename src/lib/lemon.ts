@@ -8,45 +8,45 @@ const LEMON_API = 'https://api.lemonsqueezy.com/v1';
 
 export const OFFERS = {
   'branding': {
-    label: 'Branding — Identité visuelle',
-    totalPrice: 250,
+    label: 'Branding essentiel — Identité visuelle',
+    totalPrice: 490,
     variantEnvKey: 'LEMON_VARIANT_BRANDING',
     category: 'branding',
   },
+  'branding-complet': {
+    label: 'Branding complet — Identité visuelle étendue',
+    totalPrice: 790,
+    variantEnvKey: 'LEMON_VARIANT_BRANDING_COMPLET',
+    category: 'branding',
+  },
   'contenu-1': {
-    label: 'Contenu Social — 1 publication/semaine',
-    totalPrice: 190,
+    label: 'Contenu Social — 4 publications/mois',
+    totalPrice: 290,
     variantEnvKey: 'LEMON_VARIANT_CONTENU_1',
     category: 'contenu',
   },
   'contenu-2': {
-    label: 'Contenu Social — 2 publications/semaine',
-    totalPrice: 320,
+    label: 'Contenu Social — 8 publications/mois',
+    totalPrice: 490,
     variantEnvKey: 'LEMON_VARIANT_CONTENU_2',
-    category: 'contenu',
-  },
-  'contenu-3': {
-    label: 'Contenu Social — 3 publications/semaine',
-    totalPrice: 450,
-    variantEnvKey: 'LEMON_VARIANT_CONTENU_3',
-    category: 'contenu',
-  },
-  'contenu-4': {
-    label: 'Contenu Social — 4 publications/semaine',
-    totalPrice: 590,
-    variantEnvKey: 'LEMON_VARIANT_CONTENU_4',
     category: 'contenu',
   },
   'site-statique': {
     label: 'Site web — Vitrine statique',
-    totalPrice: 500,
+    totalPrice: 790,
     variantEnvKey: 'LEMON_VARIANT_SITE_STATIQUE',
     category: 'site',
   },
   'site-dynamique': {
     label: 'Site web — Application dynamique',
-    totalPrice: 990,
+    totalPrice: 1490,
     variantEnvKey: 'LEMON_VARIANT_SITE_DYNAMIQUE',
+    category: 'site',
+  },
+  'site-branding': {
+    label: 'Site + Branding — Offre phare',
+    totalPrice: 1190,
+    variantEnvKey: 'LEMON_VARIANT_SITE_BRANDING',
     category: 'site',
   },
 } as const;

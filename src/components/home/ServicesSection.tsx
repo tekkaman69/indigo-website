@@ -60,7 +60,10 @@ const STATIC_SERVICES: ServiceData[] = [
     icon: Palette,
     title: 'Branding',
     tagline: 'Une identité visuelle qui inspire confiance et fait la différence dès le premier regard.',
-    singlePrice: 250,
+    priceVariants: [
+      { id: 'branding',         label: 'Essentiel', price: 490, detail: 'Logo, couleurs, typo, charte simplifiée' },
+      { id: 'branding-complet', label: 'Complet',   price: 790, detail: 'Essentiel + templates réseaux, mockups, fichiers sources étendus' },
+    ],
     tabs: {
       process: [
         'Brief & analyse de votre positionnement',
@@ -75,6 +78,8 @@ const STATIC_SERVICES: ServiceData[] = [
         'Typographies sélectionnées',
         'Charte graphique simplifiée',
         'Fichiers vectoriels prêts à l\'emploi',
+        'Templates réseaux sociaux ×3 (Complet)',
+        'Mockups visuels (Complet)',
       ],
       avantages: [
         'Identité unique et mémorable',
@@ -91,10 +96,8 @@ const STATIC_SERVICES: ServiceData[] = [
     title: 'Contenu Social',
     tagline: 'Du contenu calibré pour votre audience, publié régulièrement pour construire votre présence.',
     priceVariants: [
-      { id: 'contenu-1', label: '1/sem', price: 190, detail: '4 publications/mois' },
-      { id: 'contenu-2', label: '2/sem', price: 320, detail: '8 publications/mois' },
-      { id: 'contenu-3', label: '3/sem', price: 450, detail: '12 publications/mois' },
-      { id: 'contenu-4', label: '4/sem', price: 590, detail: '16 publications/mois' },
+      { id: 'contenu-1', label: '4 posts/mois', price: 290, detail: '1 publication par semaine' },
+      { id: 'contenu-2', label: '8 posts/mois', price: 490, detail: '2 publications par semaine' },
     ],
     tabs: {
       process: [
@@ -126,14 +129,14 @@ const STATIC_SERVICES: ServiceData[] = [
     title: 'Site Web',
     tagline: 'Un site qui travaille pour vous 24h/24 — conçu pour convertir, optimisé pour être trouvé.',
     priceVariants: [
-      { id: 'site-statique', label: 'Vitrine statique', price: 500, detail: 'Pour présenter votre activité' },
-      { id: 'site-dynamique', label: 'App dynamique', price: 990, detail: 'Pour interagir avec vos clients' },
+      { id: 'site-statique',  label: 'Vitrine statique', price: 790,  detail: 'Pour présenter votre activité' },
+      { id: 'site-dynamique', label: 'App dynamique',    price: 1490, detail: 'Pour interagir avec vos clients' },
     ],
     tabs: {
       process: [
         'Audit de vos besoins & maquette',
         'Design UI (Figma) + validation',
-        'Développement Next.js (TypeScript)',
+        'Développement & intégration',
         'Tests, optimisations & SEO',
         'Mise en ligne & formation',
       ],
@@ -145,7 +148,7 @@ const STATIC_SERVICES: ServiceData[] = [
         'Contenu rédigé si besoin',
       ],
       avantages: [
-        'Performant (Lighthouse 90+)',
+        'Performant (score 90+ garanti)',
         'Référencé dès le lancement',
         'Expérience utilisateur premium',
         'Facile à mettre à jour',
@@ -385,6 +388,78 @@ export default function ServicesSection() {
             <ServiceBlock key={service.id} service={service} index={index} />
           ))}
         </div>
+
+        {/* ── Offre phare : Site + Branding ── */}
+        <motion.div
+          initial={shouldReduceMotion ? {} : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-5 relative overflow-hidden rounded-xl border border-indigo-500/40 bg-indigo-500/5 backdrop-blur-md"
+        >
+          {/* Top accent line renforcée */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+
+          <div className="p-6 md:p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+
+              {/* Badge + titre */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  <span className="px-3 py-1 rounded-full bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider">
+                    Offre phare
+                  </span>
+                  <span className="px-3 py-1 rounded-full border border-indigo-500/30 text-indigo-300 text-xs font-medium">
+                    Recommandé pour démarrer
+                  </span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">Site + Branding</h3>
+                <p className="text-white/50 text-sm max-w-xl">
+                  Le système complet pour une présence digitale cohérente : identité visuelle + site web conçus ensemble, pensés pour convertir.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/40">
+                  {['Logo + charte graphique', 'Site vitrine sur-mesure', 'Cohérence visuelle totale', 'Livraison en 3 semaines'].map(item => (
+                    <span key={item} className="flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5 text-indigo-400" />{item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Prix + CTA */}
+              <div className="flex flex-col items-start lg:items-end gap-3 flex-shrink-0">
+                <div className="text-right">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-black text-white">1 190€</span>
+                  </div>
+                  <p className="text-xs text-white/30 mt-1">
+                    490€ + 790€ = 1 280€ séparément —{' '}
+                    <span className="text-indigo-400 font-medium">90€ offerts</span>
+                  </p>
+                  <p className="text-xs text-white/25 mt-0.5">Acompte 50% au démarrage</p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                  <GradientButton
+                    href="/checkout?offer=site-branding"
+                    className="py-3 text-sm justify-center whitespace-nowrap px-6"
+                  >
+                    Démarrer mon projet
+                    <ChevronRight className="w-4 h-4 ml-1 flex-shrink-0" />
+                  </GradientButton>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="border border-white/10 hover:bg-white/5 text-white/60 hover:text-white text-sm"
+                  >
+                    <Link href="/contact">Discuter d'abord</Link>
+                  </Button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
