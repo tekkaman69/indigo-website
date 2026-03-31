@@ -12,8 +12,9 @@ interface ConditionalLayoutProps {
 export function ConditionalLayout({ children }: ConditionalLayoutProps) {
   const pathname = usePathname();
   const isEditorRoute = pathname?.startsWith('/admin/portfolio/editor');
+  const isLandingPage = pathname?.startsWith('/lp');
 
-  if (isEditorRoute) {
+  if (isEditorRoute || isLandingPage) {
     return <>{children}</>;
   }
 
