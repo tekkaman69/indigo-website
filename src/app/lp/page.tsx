@@ -148,18 +148,18 @@ function HeroSection() {
 const PROBLEMS = [
   {
     icon: '🪞',
-    title: 'Votre image ne reflète pas la qualité de votre travail.',
-    body: 'Vous faites un excellent boulot. Mais votre logo, vos visuels ou votre site ne le montrent pas — et vos prospects partent chez quelqu'un qui semble plus "sérieux".',
+    title: "Votre image ne reflète pas la qualité de votre travail.",
+    body: "Vous faites un excellent boulot. Mais votre logo, vos visuels ou votre site ne le montrent pas — et vos prospects partent chez quelqu'un qui semble plus \"sérieux\".",
   },
   {
     icon: '📱',
-    title: 'Vous postez sur les réseaux, mais ça n'apporte pas de clients.',
-    body: 'Likes, abonnés… mais peu de vrais contacts. Le contenu sans stratégie ni cohérence visuelle ne convertit pas — il occupe juste du temps.',
+    title: "Vous postez sur les réseaux, mais ça n'apporte pas de clients.",
+    body: "Likes, abonnés… mais peu de vrais contacts. Le contenu sans stratégie ni cohérence visuelle ne convertit pas — il occupe juste du temps.",
   },
   {
     icon: '🔍',
-    title: 'Votre site existe, mais il ne génère pas de demandes.',
-    body: 'Votre site est en ligne — mais il n'est pas trouvé, pas convaincant, ou pas adapté au mobile. Résultat : vos concurrents captent les clients à votre place.',
+    title: "Votre site existe, mais il ne génère pas de demandes.",
+    body: "Votre site est en ligne — mais il n'est pas trouvé, pas convaincant, ou pas adapté au mobile. Résultat : vos concurrents captent les clients à votre place.",
   },
 ];
 
@@ -329,7 +329,7 @@ const TESTIMONIALS = [
     name: 'Cassandra T.',
     role: 'CEO',
     company: 'Paideia',
-    quote: 'Un travail rigoureux, à l'écoute, avec une vraie vision business. Pas juste du design — une stratégie complète pour notre positionnement digital.',
+    quote: "Un travail rigoureux, à l'écoute, avec une vraie vision business. Pas juste du design — une stratégie complète pour notre positionnement digital.",
     rating: 5,
     initial: 'C',
     color: 'from-violet-600 to-fuchsia-600',
@@ -338,7 +338,7 @@ const TESTIMONIALS = [
     name: 'Claude C.',
     role: 'Gérante & Propriétaire',
     company: 'Chez Claudie',
-    quote: 'Je cherchais quelqu'un qui comprenne les besoins des petites entreprises locales. Indigo a su capter l'essence de mon établissement et lui donner une vraie identité.',
+    quote: "Je cherchais quelqu'un qui comprenne les besoins des petites entreprises locales. Indigo a su capter l'essence de mon établissement et lui donner une vraie identité.",
     rating: 5,
     initial: 'C',
     color: 'from-cyan-600 to-indigo-600',
