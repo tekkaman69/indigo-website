@@ -1,28 +1,38 @@
-import Hero from '@/components/home/Hero';
-import ComparisonSection from '@/components/home/ComparisonSection';
-import DualProcess from '@/components/home/DualProcess';
-import ServicesSection from '@/components/home/ServicesSection';
-import PortfolioSection from '@/components/home/PortfolioSection';
-import WebPortfolioSection from '@/components/home/WebPortfolioSection';
-import Testimonials from '@/components/home/Testimonials';
-import FAQSection from '@/components/home/FAQSection';
-import FinalCTASection from '@/components/home/FinalCTASection';
-import Template from './template';
+import HeroFunnel from '@/components/home/funnel/HeroFunnel';
+import ProblemFunnel from '@/components/home/funnel/ProblemFunnel';
+import WorkMosaic from '@/components/home/funnel/WorkMosaic';
+import TestimonialsFunnel from '@/components/home/funnel/TestimonialsFunnel';
+import AcquisitionPacks from '@/components/home/funnel/AcquisitionPacks';
+import AuditSection from '@/components/home/funnel/AuditSection';
+import FAQFunnel from '@/components/home/funnel/FAQFunnel';
+import FinalCTAFunnel from '@/components/home/funnel/FinalCTAFunnel';
+import { WhatsAppFAB, FunnelDivider } from '@/components/home/funnel/WhatsApp';
 
 export default function Home() {
   return (
-    <Template>
-      <div className="flex flex-col items-center">
-        <Hero />
-        <ComparisonSection />
-        <DualProcess />
-        <ServicesSection />
-        <PortfolioSection />
-        <WebPortfolioSection />
-        <Testimonials />
-        <FAQSection />
-        <FinalCTASection />
+    // Body noir : le hero a des coins inférieurs arrondis qui révèlent ce
+    // noir en dessous (bevel exactement comme la référence ACA).
+    <div className="relative text-white overflow-x-hidden bg-[#050509]">
+      {/* Hero avec sa bande lumineuse colorée + coins bas arrondis */}
+      <HeroFunnel />
+
+      {/* Le reste du funnel — fond posé, sous le hero */}
+      <div className="relative bg-[#070815]">
+        <FunnelDivider />
+        <ProblemFunnel />
+        <FunnelDivider />
+        <WorkMosaic />
+        <FunnelDivider />
+        <TestimonialsFunnel />
+        <FunnelDivider />
+        <AcquisitionPacks />
+        <FunnelDivider />
+        <AuditSection />
+        <FAQFunnel />
+        <FinalCTAFunnel />
       </div>
-    </Template>
+
+      <WhatsAppFAB />
+    </div>
   );
 }

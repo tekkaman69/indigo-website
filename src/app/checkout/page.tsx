@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import GradientButton from '@/components/ui/GradientButton';
 import { useToast } from '@/hooks/use-toast';
-import { isValidOfferId, getOffer, getDepositAmount, type OfferId } from '@/lib/lemon';
+import { isValidOfferId, getOffer, getDepositAmount, type OfferId } from '@/lib/offers';
 import { addContactSubmission } from '@/lib/firebase/firestore';
 
 // ============================================
@@ -39,12 +39,25 @@ function CheckoutContent() {
   const [wireSubmitting, setWireSubmitting] = useState(false);
   const [wireSent, setWireSent] = useState(false);
 
-  // Offre invalide → retour accueil
+  const wasCancelled = searchParams.get('cancelled') === '1';
+
+  // Offre invalide → retour aux offres
   useEffect(() => {
     if (!offer) {
-      router.push('/#services');
+      router.push('/#offres');
     }
   }, [offer, router]);
+
+  // Paiement annulé sur Stripe → informer sans bloquer
+  useEffect(() => {
+    if (wasCancelled && offer) {
+      toast({
+        title: 'Paiement annulé',
+        description: 'Aucun montant n\'a été débité. Vous pouvez réessayer quand vous voulez.',
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wasCancelled]);
 
   if (!offer || !offerId) {
     return (
@@ -126,11 +139,11 @@ function CheckoutContent() {
       <div className="container mx-auto max-w-2xl">
         {/* Retour */}
         <Link
-          href="/#services"
+          href="/#offres"
           className="inline-flex items-center gap-2 text-white/50 hover:text-white/80 transition-colors mb-8 text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
-          Choisir une autre offre
+          Choisir un autre pack
         </Link>
 
         <motion.div
@@ -145,6 +158,7 @@ function CheckoutContent() {
             <div className="relative">
               <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Récapitulatif de la commande</p>
               <h1 className="text-2xl font-bold text-white mb-1">{offer.label}</h1>
+              <p className="text-sm text-white/50 leading-relaxed mt-2">{offer.description}</p>
               <div className="mt-4 space-y-3">
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-white/60">Prix total</span>
@@ -156,8 +170,9 @@ function CheckoutContent() {
                 </div>
                 <div className="h-px bg-white/10" />
                 <p className="text-xs text-white/40 italic">
-                  Le solde de {depositAmount}€ sera réglé à la livraison du projet.
+                  Le solde de {offer.totalPrice - depositAmount}€ sera réglé à la livraison du projet.
                 </p>
+                <p className="text-xs text-white/30">{offer.adBudget}</p>
               </div>
             </div>
           </div>
@@ -302,7 +317,7 @@ function CheckoutContent() {
                     {[
                       { label: 'Bénéficiaire', value: 'Indigo Studio' },
                       { label: 'Montant', value: `${depositAmount}€` },
-                      { label: 'Référence', value: `ACOMPTE-${offer.category.toUpperCase()}-${Date.now().toString().slice(-6)}` },
+                      { label: 'Référence', value: `ACOMPTE-${offerId.toUpperCase()}-${Date.now().toString().slice(-6)}` },
                     ].map((row) => (
                       <div key={row.label} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
                         <div>

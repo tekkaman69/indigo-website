@@ -58,11 +58,10 @@ export default function AdminPage() {
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const [portfolio, testimonials, formulas, orders, orderIntentions] = await Promise.all([
+        const [portfolio, testimonials, formulas, orderIntentions] = await Promise.all([
           getDocs(collection(db, 'portfolio')),
           getDocs(collection(db, 'testimonials')),
           getDocs(collection(db, 'formulas')),
-          getDocs(collection(db, 'orders')),
           getDocs(collection(db, 'order_intentions')),
         ]);
 
@@ -74,7 +73,7 @@ export default function AdminPage() {
           portfolioPublished: publishedCount,
           testimonials: testimonials.size,
           formulas: formulas.size,
-          orders: orders.size + orderIntentions.size,
+          orders: orderIntentions.size,
           ordersPending: pendingCount,
         });
 
@@ -150,6 +149,17 @@ export default function AdminPage() {
       border: 'border-emerald-500/20',
       stat: isLoadingStats ? '…' : String(stats.orders),
       statLabel: `dont ${stats.ordersPending} en attente`,
+    },
+    {
+      title: 'Mosaïque',
+      description: 'Images affichées sur la home',
+      icon: FileStack,
+      href: '/admin/mosaic',
+      color: 'text-violet-400',
+      bg: 'bg-violet-500/10',
+      border: 'border-violet-500/20',
+      stat: '—',
+      statLabel: 'sélection manuelle',
     },
   ];
 

@@ -52,7 +52,7 @@ const EMPTY: Omit<ServiceDoc, 'id'> = {
 const DEFAULT_SERVICES: Omit<ServiceDoc, 'id'>[] = [
   {
     serviceId: 'branding',
-    title: 'Branding',
+    title: 'Identité visuelle',
     tagline: 'Une identité visuelle qui inspire confiance et fait la différence dès le premier regard.',
     order: 0,
     singlePrice: 250,
@@ -167,7 +167,7 @@ function linesToArray(text: string): string[] {
 }
 
 const SERVICE_LABELS: Record<string, string> = {
-  branding: 'Branding',
+  branding: 'Identité visuelle',
   contenu: 'Contenu Social',
   site: 'Site Web',
 };
@@ -349,7 +349,7 @@ export default function FormulasAdminPage() {
                         onChange={(e) => setForm((f) => ({ ...f, serviceId: e.target.value }))}
                         className="w-full rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm text-white"
                       >
-                        <option value="branding">Branding</option>
+                        <option value="branding">Identité visuelle</option>
                         <option value="contenu">Contenu Social</option>
                         <option value="site">Site Web</option>
                       </select>

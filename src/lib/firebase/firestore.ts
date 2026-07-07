@@ -15,7 +15,7 @@ import {
   DocumentData
 } from 'firebase/firestore';
 import { db } from './config';
-import type { ContactSubmission, PortfolioItem, OrderIntention } from '@/types/firebase';
+import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem } from '@/types/firebase';
 
 export const COLLECTIONS = {
   CONTACTS: 'contacts',
@@ -24,6 +24,7 @@ export const COLLECTIONS = {
   SERVICES: 'services',
   SITE_SETTINGS: 'site_settings',
   ORDER_INTENTIONS: 'order_intentions',
+  MOSAIC_ITEMS: 'mosaic_items',
 } as const;
 
 // ============================================
@@ -225,4 +226,59 @@ export async function getOrderIntentionById(id: string): Promise<OrderIntention 
     return { id: snap.id, ...snap.data() } as OrderIntention;
   }
   return null;
+}
+
+export async function getOrderIntentions(): Promise<OrderIntention[]> {
+  const ref = collection(db, COLLECTIONS.ORDER_INTENTIONS);
+  const q = query(ref, orderBy('createdAt', 'desc'));
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() })) as OrderIntention[];
+}
+
+// ============================================
+// MOSAIC ITEMS
+// ============================================
+
+export async function getMosaicItems(): Promise<MosaicItem[]> {
+  const ref = collection(db, COLLECTIONS.MOSAIC_ITEMS);
+  try {
+    // Requête combinée (nécessite un index composite active + order)
+    const q = query(ref, where('active', '==', true), orderBy('order', 'asc'));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() })) as MosaicItem[];
+  } catch {
+    // Fallback sans index : on récupère tout et on filtre/trie côté client
+    const snap = await getDocs(ref);
+    return (snap.docs.map(d => ({ id: d.id, ...d.data() })) as MosaicItem[])
+      .filter(m => m.active !== false)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+  }
+}
+
+export async function getAllMosaicItems(): Promise<MosaicItem[]> {
+  const ref = collection(db, COLLECTIONS.MOSAIC_ITEMS);
+  const snap = await getDocs(ref);
+  return (snap.docs.map(d => ({ id: d.id, ...d.data() })) as MosaicItem[])
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+}
+
+export async function addMosaicItem(
+  item: Omit<MosaicItem, 'id' | 'createdAt'>
+): Promise<string> {
+  const ref = collection(db, COLLECTIONS.MOSAIC_ITEMS);
+  const docRef = await addDoc(ref, { ...item, createdAt: Timestamp.now() });
+  return docRef.id;
+}
+
+export async function updateMosaicItem(
+  id: string,
+  data: Partial<Omit<MosaicItem, 'id' | 'createdAt'>>
+): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.MOSAIC_ITEMS, id);
+  await updateDoc(docRef, data);
+}
+
+export async function deleteMosaicItem(id: string): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.MOSAIC_ITEMS, id);
+  await deleteDoc(docRef);
 }

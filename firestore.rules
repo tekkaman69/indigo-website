@@ -3,69 +3,66 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Portfolio collection - allow all for now (add authentication later)
+    // ── Helper : admin authentifié (UIDs alignés avec src/lib/admin.ts) ──
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid in ['ugQ2cJ4Y23fEwHFe4XrFeX3xcbO2'];
+    }
+
+    // Portfolio — lecture publique (le filtre "published" est appliqué côté
+    // requête), écriture admin uniquement
     match /portfolio/{document=**} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
-    // Assets collection - allow all for now (add authentication later)
+    // Assets (bibliothèque d'images de l'éditeur)
     match /assets/{assetId} {
-      allow read: if true;  // Anyone can read assets
-      allow write: if true; // Anyone can create/update assets (add auth later)
-      allow delete: if true; // Anyone can delete unused assets (add auth later)
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
-    // Contact messages
-    match /contact-messages/{document=**} {
-      allow read, write: if true;
-    }
-
-    // Contacts (nouveau système)
+    // Contacts — le formulaire public peut créer, seul l'admin lit/gère
     match /contacts/{contactId} {
-      allow read, write: if true; // Temporaire - sécuriser plus tard
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
     }
 
-    // Services - Marketplace
-    match /services/{serviceId} {
-      allow read: if true; // Lecture publique
-      allow create, update, delete: if true; // Temporaire - admin uniquement en prod
-    }
-
-    // Orders - Marketplace
-    match /orders/{orderId} {
-      allow read, write: if true; // Temporaire - sécuriser avec magicToken en prod
-    }
-
-    // Order Messages - Marketplace
-    match /order_messages/{messageId} {
-      allow read, write: if true; // Temporaire - sécuriser en prod
-    }
-
-    // Order Files - Marketplace
-    match /order_files/{fileId} {
-      allow read, write: if true; // Temporaire - sécuriser en prod
-    }
-
-    // Testimonials
+    // Témoignages — lecture publique, gestion admin
     match /testimonials/{testimonialId} {
-      allow read, write: if true; // Temporaire - admin uniquement en prod
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
-    // Site Settings - Configuration globale du site
+    // Réglages du site — lecture publique, écriture admin
     match /site_settings/{settingId} {
-      allow read: if true; // Lecture publique (pour vérifier visibilité pages)
-      allow write: if true; // Temporaire - admin uniquement en prod
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
-    // Formulas - Services & tarifs affichés sur la landing
+    // Formules / offres affichées — lecture publique, écriture admin
     match /formulas/{formulaId} {
-      allow read: if true;  // Lecture publique (landing page)
-      allow write: if true; // Temporaire - admin uniquement en prod
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
-    // Order Intentions - Checkout acompte
-    match /order_intentions/{intentionId} {
-      allow read, write: if true; // Temporaire - sécuriser en prod
+    // Mosaïque de la home — lecture publique, sélection gérée par l'admin
+    match /mosaic_items/{itemId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
+
+    // Intentions de commande (acomptes packs)
+    // - création publique UNIQUEMENT en statut 'pending' (formulaire checkout,
+    //   fallback si le SDK admin n'est pas configuré côté serveur)
+    // - le passage à 'paid'/'failed' se fait via le webhook Stripe
+    //   (SDK admin serveur, contourne les règles) ou via l'admin authentifié
+    match /order_intentions/{intentionId} {
+      allow create: if request.resource.data.status == 'pending';
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Tout le reste (anciennes collections marketplace : orders,
+    // order_messages, order_files, services) : accès refusé par défaut.
   }
 }

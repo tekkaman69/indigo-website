@@ -7,8 +7,16 @@ import { ConditionalLayout } from '@/components/layout/ConditionalLayout';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Indigo — Création & Automatisation',
-  description: 'Agence de création de contenu, branding, et automatisations pour booster votre présence.',
+  title: 'Indigo — Présence digitale & acquisition clients · Martinique & Guadeloupe',
+  description:
+    "Packs de présence numérique pour TPE aux Antilles : identité visuelle, contenu Instagram, page de conversion et campagne Meta Ads. L'objectif : générer des demandes qualifiées.",
+  openGraph: {
+    title: 'Indigo — Présence digitale & acquisition clients',
+    description:
+      "Image, contenu, page de conversion et campagne publicitaire : la base digitale complète pour attirer des clients en Martinique et Guadeloupe.",
+    locale: 'fr_FR',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

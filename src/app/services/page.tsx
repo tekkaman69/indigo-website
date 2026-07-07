@@ -1,12 +1,12 @@
 'use client';
-// Marketplace à la carte désactivée — redirige vers les formules de la landing page
+// Marketplace à la carte supprimée — redirige vers les packs de la home
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function ServicesPage() {
   const router = useRouter();
   useEffect(() => {
-    router.replace('/#services');
+    router.replace('/#offres');
   }, [router]);
   return null;
 }

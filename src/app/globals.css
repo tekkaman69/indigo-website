@@ -3,7 +3,14 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+  /* Les ancres (#offres, #realisations) ne passent pas sous la navbar fixe */
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer base {

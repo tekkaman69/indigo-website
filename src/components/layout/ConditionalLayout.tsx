@@ -12,17 +12,24 @@ interface ConditionalLayoutProps {
 export function ConditionalLayout({ children }: ConditionalLayoutProps) {
   const pathname = usePathname();
   const isEditorRoute = pathname?.startsWith('/admin/portfolio/editor');
-  const isLandingPage = pathname?.startsWith('/lp');
+  // La home gère son propre fond (hero coloré + sections sombres). Les autres
+  // pages reçoivent le fond animé statique.
+  const isFunnelHome = pathname === '/';
 
-  if (isEditorRoute || isLandingPage) {
+  if (isEditorRoute) {
     return <>{children}</>;
   }
 
   return (
     <>
-      <Background />
+      {/* Fond sombre uni sur la home (pas de shader → navbar/footer propres) */}
+      {isFunnelHome ? (
+        <div className="fixed inset-0 -z-50 bg-[#050509]" aria-hidden="true" />
+      ) : (
+        <Background />
+      )}
       <Header />
-      <main className="relative z-10">{children}</main>
+      <main className="relative z-10 pt-16">{children}</main>
       <Footer />
     </>
   );

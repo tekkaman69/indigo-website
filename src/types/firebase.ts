@@ -46,6 +46,21 @@ export interface ProcessStep {
   order: number;
 }
 
+export interface MosaicItem {
+  id: string;
+  url: string;
+  alt: string;
+  /** Asset source (collection assets) */
+  assetId?: string;
+  /** Projet lié si l'image est utilisée dans un projet (clic → /portfolio/[id]) */
+  projectId?: string;
+  projectTitle?: string;
+  industry?: string;
+  order: number;
+  active: boolean;
+  createdAt: Timestamp;
+}
+
 export interface PortfolioItem {
   id: string;
   title: string;
@@ -89,7 +104,8 @@ export interface OrderIntention {
   clientCompany?: string;
   clientDescription?: string;
   status: 'pending' | 'paid' | 'failed';
-  lemonOrderId?: string;
+  /** Référence du paiement (id de session Stripe Checkout) */
+  paymentRef?: string;
   createdAt: Timestamp;
   updatedAt?: Timestamp;
 }
