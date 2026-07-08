@@ -29,19 +29,22 @@ interface WhatsAppButtonProps {
   size?: Size;
   /** Message pré-rempli ; sinon message d'audit par défaut. */
   message?: string;
+  /** Occupe toute la largeur du conteneur parent (ex: dans une carte pricing). */
+  fullWidth?: boolean;
 }
 
 export function WhatsAppButton({
   label = 'Prendre rendez-vous sur WhatsApp',
   size = 'md',
   message = DEFAULT_MESSAGE,
+  fullWidth = false,
 }: WhatsAppButtonProps) {
   return (
     <a
       href={waUrl(message)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center justify-center font-semibold rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-white transition-all duration-200 shadow-lg shadow-green-500/25 hover:shadow-green-500/40 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-950 ${SIZE_CLASSES[size]}`}
+      className={`${fullWidth ? 'flex w-full' : 'inline-flex'} items-center justify-center font-semibold rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-white transition-all duration-200 shadow-lg shadow-green-500/25 hover:shadow-green-500/40 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-950 ${SIZE_CLASSES[size]}`}
     >
       <MessageCircle className="w-5 h-5 flex-shrink-0" />
       {label}

@@ -34,7 +34,7 @@ export default function AcquisitionPacks() {
         <GuaranteeBanner />
 
         {/* Grille des packs */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-5 items-stretch">
           {PRICING_PACKS.map((pack, i) => (
             <PricingCard key={pack.id} pack={pack} index={i} />
           ))}
