@@ -23,13 +23,13 @@ function MosaicPreview({ item }: { item: HomeProject }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden transition-colors group-hover:border-cyan-400/50">
       {slots ? (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3">
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 p-2 sm:p-3">
           {slots.map((slot, i) => {
             const image = item.mosaicSlots?.[i];
             return (
               <div
                 key={i}
-                className={`relative overflow-hidden rounded-lg max-sm:col-span-2 ${slot.span}`}
+                className={`relative overflow-hidden rounded-lg ${slot.span}`}
                 style={{ aspectRatio: slot.aspect }}
               >
                 {image?.url ? (

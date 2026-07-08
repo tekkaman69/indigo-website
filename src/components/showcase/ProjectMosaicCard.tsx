@@ -43,7 +43,7 @@ export default function ProjectMosaicCard({ item }: ProjectMosaicCardProps) {
           {/* Cadre à ratio fixe — garantit une hauteur de carte cohérente entre gabarits */}
           <div className="relative w-full aspect-[4/3] overflow-hidden">
             {slots ? (
-              <div className="absolute inset-0 grid grid-cols-2 sm:grid-cols-4 gap-3 p-3">
+              <div className="absolute inset-0 grid grid-cols-4 gap-2 sm:gap-3 p-2 sm:p-3">
                 {slots.map((slot, i) => {
                   const image = item.mosaicSlots?.[i];
                   return (
@@ -54,7 +54,7 @@ export default function ProjectMosaicCard({ item }: ProjectMosaicCardProps) {
                       whileHover={reduce ? {} : { scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                       disabled={!image?.url}
-                      className={`max-sm:col-span-2 ${slot.span} ${image?.url ? 'cursor-zoom-in' : 'cursor-default'}`}
+                      className={`${slot.span} ${image?.url ? 'cursor-zoom-in' : 'cursor-default'}`}
                     >
                       {image?.url ? (
                         <MosaicSlotImage image={image} alt={`${item.title} — visuel ${i + 1}`} baseAspect={slot.aspect} />
