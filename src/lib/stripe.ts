@@ -30,9 +30,9 @@ interface DepositCheckoutData {
 }
 
 /**
- * Crée une session Stripe Checkout pour l'acompte de 50 % d'un pack.
- * Le prix est défini inline (price_data) — pas besoin de produits
- * pré-créés dans le dashboard Stripe.
+ * Crée une session Stripe Checkout pour le 1er versement (plan 3× sans
+ * frais) d'un pack. Le prix est défini inline (price_data) — pas besoin de
+ * produits pré-créés dans le dashboard Stripe.
  */
 export async function createDepositCheckout(data: DepositCheckoutData): Promise<string> {
   const stripe = getStripe();
@@ -54,8 +54,8 @@ export async function createDepositCheckout(data: DepositCheckoutData): Promise<
           currency: 'eur',
           unit_amount: depositAmount * 100, // centimes
           product_data: {
-            name: `Acompte 50 % — ${offer.label}`,
-            description: `Acompte pour : ${offer.label} (total ${offer.totalPrice} €). Le solde sera réglé à la livraison.`,
+            name: `1er versement (3× sans frais) — ${offer.label}`,
+            description: `Premier des 3 versements pour : ${offer.label} (total ${offer.totalPrice} €).`,
           },
         },
       },

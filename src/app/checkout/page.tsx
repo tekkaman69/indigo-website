@@ -165,14 +165,16 @@ function CheckoutContent() {
                   <span className="text-white font-medium">{offer.totalPrice}€</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-white/60 text-sm">Acompte aujourd'hui (50%)</span>
+                  <span className="text-white/60 text-sm">1er versement aujourd'hui (3× sans frais)</span>
                   <span className="text-2xl font-bold text-indigo-400">{depositAmount}€</span>
                 </div>
                 <div className="h-px bg-white/10" />
                 <p className="text-xs text-white/40 italic">
-                  Le solde de {offer.totalPrice - depositAmount}€ sera réglé à la livraison du projet.
+                  Les 2 versements suivants ({depositAmount}€ chacun) seront réglés aux échéances convenues.
                 </p>
-                <p className="text-xs text-white/30">{offer.adBudget}</p>
+                {'adBudget' in offer && (
+                  <p className="text-xs text-white/30">Budget pub conseillé : {offer.adBudget}</p>
+                )}
               </div>
             </div>
           </div>
@@ -246,7 +248,7 @@ function CheckoutContent() {
                   ) : (
                     <span className="flex items-center justify-center gap-2">
                       <CreditCard className="w-4 h-4" />
-                      Payer l'acompte — {depositAmount}€
+                      Payer le 1er versement — {depositAmount}€
                     </span>
                   )}
                 </GradientButton>
@@ -310,7 +312,7 @@ function CheckoutContent() {
                 <>
                   <h3 className="text-xl font-bold text-white mb-1">Paiement par virement</h3>
                   <p className="text-white/50 text-sm mb-5">
-                    Acompte de {depositAmount}€ pour : {offer.label}
+                    1er versement de {depositAmount}€ pour : {offer.label}
                   </p>
 
                   <div className="space-y-3 mb-6">

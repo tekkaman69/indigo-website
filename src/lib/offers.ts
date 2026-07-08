@@ -2,29 +2,28 @@
 // OFFRES — PACKS ACQUISITION
 // Source de vérité unique des offres payables en ligne.
 // Module sans dépendance serveur : importable côté client ET serveur.
-// Doit rester aligné avec components/home/funnel/AcquisitionPacks.tsx
+// Doit rester aligné avec src/lib/pricing.config.ts (packs affichés sur la home)
 // ============================================
 
 export const OFFERS = {
   'pack-starter': {
-    label: 'Pack Acquisition Starter',
-    totalPrice: 990,
+    label: 'Pack PREZANS',
+    totalPrice: 490,
     description:
-      'Optimisation Instagram, mini direction artistique, 9 posts + 3 stories, one page tunnel, 2 créas publicitaires, campagne Meta, suivi 14 jours.',
-    adBudget: 'Budget pub conseillé : 200 à 400 € (à votre charge)',
+      'Fiche Google Business créée et optimisée, une page mobile avec bouton WhatsApp direct, profil Instagram remis à niveau de A à Z, 1 semaine de publications prêtes à poster.',
   },
   'pack-local': {
-    label: 'Pack Acquisition Local',
-    totalPrice: 1490,
+    label: 'Pack KLIYAN',
+    totalPrice: 1190,
     description:
-      'Identité visuelle express, Instagram complet, 12-15 posts + 5 stories + 3 highlights, one page tunnel de vente, 3-4 créas, campagne Meta Ads, suivi 30 jours + bilan.',
-    adBudget: 'Budget pub conseillé : 300 à 600 € (à votre charge)',
+      'Fiche Google Business optimisée, page mobile qui convertit vos visiteurs en demandes WhatsApp, profil Instagram remis à niveau, 3 semaines de publications, 2 à 3 publicités Facebook/Instagram installées et lancées, suivi 30 jours avec bilan vocal WhatsApp chaque semaine.',
+    adBudget: 'Budget pub conseillé : 200 à 400 € (à votre charge)',
   },
   'pack-premium': {
-    label: 'Pack Acquisition Premium',
+    label: 'Pack LIDÈ',
     totalPrice: 1990,
     description:
-      'Identité visuelle poussée, 20-24 posts + 8-10 stories, one page premium, 5-6 créas, 2-3 angles testés, campagne Meta Ads 30-45 jours, bilan stratégique.',
+      'Identité visuelle complète, 4 à 5 semaines de publications, page premium, 5 à 6 publicités avec plusieurs angles testés, campagne Facebook/Instagram sur 30 à 45 jours, suivi renforcé + bilan stratégique, montage du dossier de subvention Chèque TIC / Pass Numérique inclus.',
     adBudget: 'Budget pub conseillé : 500 à 1000 € (à votre charge)',
   },
 } as const;
@@ -39,7 +38,7 @@ export function getOffer(offerId: OfferId) {
   return OFFERS[offerId];
 }
 
-/** Acompte de 50 %, arrondi à l'euro. */
+/** Premier versement du plan en 3 fois sans frais, arrondi à l'euro. */
 export function getDepositAmount(totalPrice: number): number {
-  return Math.round(totalPrice * 0.5);
+  return Math.round(totalPrice / 3);
 }
