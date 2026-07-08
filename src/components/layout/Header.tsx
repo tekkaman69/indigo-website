@@ -10,7 +10,7 @@ import { waUrl } from '@/components/home/funnel/WhatsApp';
 
 const navItems = [
   { name: 'Nos offres', href: '/#offres' },
-  { name: 'Portfolio', href: '/portfolio' },
+  { name: 'Portfolio', href: '/#realisations' },
 ];
 
 const WA_MSG = "Bonjour, je viens de votre site et j'aimerais en savoir plus.";

@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { getHomeProjectsForDisplay } from '@/lib/firebase/firestore';
 import type { HomeProject } from '@/types/firebase';
 import type { BusinessCategory } from '@/config/business-categories';
@@ -117,13 +116,6 @@ export default function ProjectShowcase() {
           className="mt-12 flex flex-col items-center gap-4"
         >
           <WhatsAppButton label="Je veux un résultat comme ça" size="md" />
-          <Link
-            href="/portfolio"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium transition-colors"
-          >
-            Voir tout le portfolio
-            <ArrowUpRight className="w-4 h-4" />
-          </Link>
         </motion.div>
       </div>
     </section>
