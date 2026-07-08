@@ -11,9 +11,10 @@ import { useToast } from '@/hooks/use-toast';
 import { getPortfolioItems, addPortfolioItem, updatePortfolioItem, deletePortfolioItem } from '@/lib/firebase/firestore';
 import { uploadImage, generateUniqueFileName } from '@/lib/firebase/storage';
 import type { PortfolioItem } from '@/types/firebase';
-import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, Eye, EyeOff, X } from 'lucide-react';
 import Template from '../../template';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const emptyForm = {
   title: '',
@@ -46,6 +47,13 @@ export default function AdminPortfolioPage() {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [formData, setFormData] = useState({ ...emptyForm });
 
+  // Récit narratif (viewer story de la home) — avant/après + livrables
+  const [beforeFile, setBeforeFile] = useState<File | null>(null);
+  const [beforePreview, setBeforePreview] = useState<string>('');
+  const [afterFile, setAfterFile] = useState<File | null>(null);
+  const [afterPreview, setAfterPreview] = useState<string>('');
+  const [delivered, setDelivered] = useState<Array<{ label: string; imageUrl: string; file: File | null; preview: string }>>([]);
+
   useEffect(() => {
     loadProjects();
   }, []);
@@ -77,10 +85,69 @@ export default function AdminPortfolioPage() {
     }
   };
 
+  const readAsPreview = (file: File, setPreview: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleBeforeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'Erreur', description: "L'image ne doit pas dépasser 5 MB", variant: 'destructive' });
+      return;
+    }
+    setBeforeFile(file);
+    readAsPreview(file, setBeforePreview);
+  };
+
+  const handleAfterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'Erreur', description: "L'image ne doit pas dépasser 5 MB", variant: 'destructive' });
+      return;
+    }
+    setAfterFile(file);
+    readAsPreview(file, setAfterPreview);
+  };
+
+  const addDeliveredItem = () => {
+    setDelivered(prev => [...prev, { label: '', imageUrl: '', file: null, preview: '' }]);
+  };
+
+  const removeDeliveredItem = (index: number) => {
+    setDelivered(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const updateDeliveredLabel = (index: number, label: string) => {
+    setDelivered(prev => prev.map((d, i) => (i === index ? { ...d, label } : d)));
+  };
+
+  const updateDeliveredImage = (index: number, file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'Erreur', description: "L'image ne doit pas dépasser 5 MB", variant: 'destructive' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setDelivered(prev =>
+        prev.map((d, i) => (i === index ? { ...d, file, preview: reader.result as string } : d))
+      );
+    };
+    reader.readAsDataURL(file);
+  };
+
   const resetForm = () => {
     setFormData({ ...emptyForm });
     setImageFile(null);
     setImagePreview('');
+    setBeforeFile(null);
+    setBeforePreview('');
+    setAfterFile(null);
+    setAfterPreview('');
+    setDelivered([]);
     setEditingProject(null);
     setShowForm(false);
   };
@@ -106,6 +173,13 @@ export default function AdminPortfolioPage() {
       webFeatured: project.webFeatured ?? false,
     });
     setImagePreview(project.imageUrl);
+    setBeforeFile(null);
+    setBeforePreview(project.before?.url ?? '');
+    setAfterFile(null);
+    setAfterPreview(project.after?.url ?? '');
+    setDelivered(
+      (project.delivered ?? []).map(d => ({ label: d.label, imageUrl: d.imageUrl, file: null, preview: d.imageUrl }))
+    );
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -140,6 +214,32 @@ export default function AdminPortfolioPage() {
         }
       }
 
+      // Avant / après (récit narratif)
+      let beforeUrl = beforePreview && !beforeFile ? beforePreview : '';
+      if (beforeFile) {
+        const path = `portfolio/${generateUniqueFileName(beforeFile.name)}`;
+        beforeUrl = await uploadImage(beforeFile, path);
+      }
+      let afterUrl = afterPreview && !afterFile ? afterPreview : '';
+      if (afterFile) {
+        const path = `portfolio/${generateUniqueFileName(afterFile.name)}`;
+        afterUrl = await uploadImage(afterFile, path);
+      }
+
+      // Livrables (label + image), upload des fichiers modifiés uniquement
+      const deliveredData = await Promise.all(
+        delivered
+          .filter(d => d.label.trim())
+          .map(async d => {
+            let imageUrl = d.imageUrl;
+            if (d.file) {
+              const path = `portfolio/${generateUniqueFileName(d.file.name)}`;
+              imageUrl = await uploadImage(d.file, path);
+            }
+            return { label: d.label.trim(), imageUrl };
+          })
+      );
+
       const tags = formData.tags.split(',').map(t => t.trim()).filter(t => t.length > 0);
 
       const projectData = {
@@ -159,6 +259,9 @@ export default function AdminPortfolioPage() {
         type: formData.type,
         url: formData.url || undefined,
         webFeatured: formData.webFeatured,
+        before: beforeUrl ? { url: beforeUrl } : undefined,
+        after: afterUrl ? { url: afterUrl } : undefined,
+        delivered: deliveredData.length > 0 ? deliveredData : undefined,
       };
 
       if (editingProject) {
@@ -280,6 +383,93 @@ export default function AdminPortfolioPage() {
                         <Label htmlFor="result">Résultat obtenu</Label>
                         <Input id="result" placeholder="Augmentation du taux de conversion de 40%" {...field('result')} disabled={isSubmitting} />
                       </div>
+                    </div>
+
+                    {/* Récit narratif — viewer story de la home (ProjectShowcase) */}
+                    <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-4 space-y-4">
+                      <p className="text-sm font-medium text-cyan-400">
+                        Récit narratif (page d'accueil — avant/après et livrables illustrés)
+                      </p>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <Label htmlFor="beforeFile">Image "avant"</Label>
+                          <div className="flex items-center gap-3">
+                            <Input id="beforeFile" type="file" accept="image/*" onChange={handleBeforeChange} disabled={isSubmitting} className="flex-1" />
+                            {beforePreview && (
+                              <img src={beforePreview} alt="Avant" className="w-14 h-14 object-cover rounded-md border border-border" />
+                            )}
+                          </div>
+                        </div>
+                        <div className="space-y-1.5">
+                          <Label htmlFor="afterFile">Image "après"</Label>
+                          <div className="flex items-center gap-3">
+                            <Input id="afterFile" type="file" accept="image/*" onChange={handleAfterChange} disabled={isSubmitting} className="flex-1" />
+                            {afterPreview && (
+                              <img src={afterPreview} alt="Après" className="w-14 h-14 object-cover rounded-md border border-border" />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Optionnel — si absent, l'écran "avant/après" du viewer affichera un second visuel du projet à la place.
+                      </p>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Label>Ce qu'on a fait (livrables illustrés)</Label>
+                          <Button type="button" size="sm" variant="outline" onClick={addDeliveredItem} disabled={isSubmitting} className="gap-1.5">
+                            <Plus className="w-3.5 h-3.5" />
+                            Ajouter
+                          </Button>
+                        </div>
+                        {delivered.map((item, index) => (
+                          <div key={index} className="flex items-center gap-3 rounded-md border border-border p-2.5">
+                            <Input
+                              placeholder="Un logo et une image pro cohérente"
+                              value={item.label}
+                              onChange={(e) => updateDeliveredLabel(index, e.target.value)}
+                              disabled={isSubmitting}
+                              className="flex-1"
+                            />
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) updateDeliveredImage(index, file);
+                              }}
+                              disabled={isSubmitting}
+                              className="w-40"
+                            />
+                            {item.preview && (
+                              <img src={item.preview} alt={item.label} className="w-10 h-10 object-cover rounded-md border border-border flex-shrink-0" />
+                            )}
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => removeDeliveredItem(index)}
+                              disabled={isSubmitting}
+                              className="text-destructive hover:text-destructive flex-shrink-0"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        {delivered.length === 0 && (
+                          <p className="text-xs text-muted-foreground">Aucun livrable ajouté — l'écran "ce qu'on a fait" du viewer sera vide.</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Mosaïque de la home — gérée dans sa propre entité indépendante */}
+                    <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-4">
+                      <p className="text-sm text-white/70">
+                        Les cartes affichées dans « Nos réalisations » sur la home se créent et se configurent
+                        indépendamment dans <Link href="/admin/mosaic" className="text-indigo-300 hover:underline">Projets home</Link>,
+                        avec un lien optionnel vers ce projet portfolio.
+                      </p>
                     </div>
 
                     {/* Image */}

@@ -15,7 +15,7 @@ import {
   DocumentData
 } from 'firebase/firestore';
 import { db } from './config';
-import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem } from '@/types/firebase';
+import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem, HomeProject } from '@/types/firebase';
 
 export const COLLECTIONS = {
   CONTACTS: 'contacts',
@@ -25,6 +25,7 @@ export const COLLECTIONS = {
   SITE_SETTINGS: 'site_settings',
   ORDER_INTENTIONS: 'order_intentions',
   MOSAIC_ITEMS: 'mosaic_items',
+  HOME_PROJECTS: 'home_projects',
 } as const;
 
 // ============================================
@@ -105,7 +106,7 @@ export async function getFeaturedPortfolioItems(): Promise<PortfolioItem[]> {
       where('published', '==', true),
       where('featured', '==', true),
       orderBy('order', 'asc'),
-      limit(6)
+      limit(24)
     );
     const snapshot = await getDocs(q);
     return snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as PortfolioItem[];
@@ -118,7 +119,7 @@ export async function getFeaturedPortfolioItems(): Promise<PortfolioItem[]> {
     return all
       .filter(item => item.published !== false && item.featured === true)
       .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
-      .slice(0, 6);
+      .slice(0, 24);
   }
 }
 
@@ -280,5 +281,67 @@ export async function updateMosaicItem(
 
 export async function deleteMosaicItem(id: string): Promise<void> {
   const docRef = doc(db, COLLECTIONS.MOSAIC_ITEMS, id);
+  await deleteDoc(docRef);
+}
+
+// ============================================
+// HOME PROJECTS (cartes ProjectShowcase — entité indépendante de PortfolioItem)
+// ============================================
+
+export async function getHomeProjectsForDisplay(): Promise<HomeProject[]> {
+  const ref = collection(db, COLLECTIONS.HOME_PROJECTS);
+  try {
+    const q = query(ref, where('published', '==', true), orderBy('order', 'asc'), limit(24));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() })) as HomeProject[];
+  } catch {
+    // Fallback: récupérer tous les items et filtrer côté client
+    // (utile si l'index Firestore n'est pas encore créé)
+    const snap = await getDocs(ref);
+    const all = snap.docs.map(d => ({ id: d.id, ...d.data() })) as HomeProject[];
+    return all
+      .filter(item => item.published === true)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+      .slice(0, 24);
+  }
+}
+
+export async function getAllHomeProjects(): Promise<HomeProject[]> {
+  const ref = collection(db, COLLECTIONS.HOME_PROJECTS);
+  const snap = await getDocs(ref);
+  return (snap.docs.map(d => ({ id: d.id, ...d.data() })) as HomeProject[])
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+}
+
+export async function getHomeProjectById(id: string): Promise<HomeProject | null> {
+  const docRef = doc(db, COLLECTIONS.HOME_PROJECTS, id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as HomeProject;
+  }
+  return null;
+}
+
+export async function addHomeProject(data: Omit<HomeProject, 'id' | 'createdAt'>): Promise<string> {
+  const ref = collection(db, COLLECTIONS.HOME_PROJECTS);
+  const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+  const docRef = await addDoc(ref, { ...cleanData, createdAt: Timestamp.now() });
+  return docRef.id;
+}
+
+export async function updateHomeProject(id: string, data: Partial<Omit<HomeProject, 'id' | 'createdAt'>>): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.HOME_PROJECTS, id);
+  const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+  await updateDoc(docRef, cleanData as DocumentData);
+}
+
+export async function deleteHomeProject(id: string): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.HOME_PROJECTS, id);
   await deleteDoc(docRef);
 }

@@ -151,15 +151,15 @@ export default function AdminPage() {
       statLabel: `dont ${stats.ordersPending} en attente`,
     },
     {
-      title: 'Mosaïque',
-      description: 'Images affichées sur la home',
+      title: 'Projets home',
+      description: 'Cartes affichées dans « Nos réalisations »',
       icon: FileStack,
       href: '/admin/mosaic',
       color: 'text-violet-400',
       bg: 'bg-violet-500/10',
       border: 'border-violet-500/20',
       stat: '—',
-      statLabel: 'sélection manuelle',
+      statLabel: 'projets home',
     },
   ];
 

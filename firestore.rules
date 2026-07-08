@@ -52,6 +52,13 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Projets de la home (ProjectShowcase) — lecture publique (filtre
+    // "published" appliqué côté requête), écriture admin uniquement
+    match /home_projects/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Intentions de commande (acomptes packs)
     // - création publique UNIQUEMENT en statut 'pending' (formulaire checkout,
     //   fallback si le SDK admin n'est pas configuré côté serveur)

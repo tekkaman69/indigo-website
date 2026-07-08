@@ -28,13 +28,13 @@ const PACKS: Pack[] = [
     price: '990 €',
     tagline: 'Pour démarrer avec un budget maîtrisé.',
     features: [
-      'Optimisation Instagram',
-      'Mini direction artistique',
-      '9 posts Instagram + 3 stories',
-      'One page tunnel simple',
-      '2 créas publicitaires',
-      'Configuration campagne Meta',
-      'Suivi 14 jours',
+      'Votre profil Instagram remis à niveau de A à Z',
+      'Un style visuel défini pour votre marque',
+      '2 semaines de publications prêtes à poster',
+      'Une page qui transforme vos visiteurs en demandes',
+      '2 publicités prêtes à diffuser',
+      'Votre publicité Facebook/Instagram installée et lancée',
+      'On surveille pendant 14 jours',
     ],
     adBudget: 'Budget pub conseillé : 200 à 400 € (à votre charge)',
   },
@@ -45,13 +45,13 @@ const PACKS: Pack[] = [
     price: '1 490 €',
     tagline: 'La base digitale complète pour générer des demandes.',
     features: [
-      'Identité visuelle express',
-      'Optimisation Instagram complète',
-      '12 à 15 posts + 5 stories + 3 highlights',
-      'One page tunnel de vente',
-      '3 à 4 créas publicitaires',
-      'Campagne Meta Ads',
-      'Suivi 30 jours + bilan & recommandations',
+      'Un logo et une image pro cohérente',
+      'Votre profil Instagram remis à niveau de A à Z',
+      '2 à 3 semaines de publications prêtes à poster',
+      'Une page qui transforme vos visiteurs en demandes',
+      '3 à 4 publicités prêtes à diffuser',
+      'Votre publicité Facebook/Instagram installée et lancée',
+      'On surveille, on ajuste, et on vous explique tout en clair',
     ],
     adBudget: 'Budget pub conseillé : 300 à 600 € (à votre charge)',
     highlight: true,
@@ -64,13 +64,13 @@ const PACKS: Pack[] = [
     price: '1 990 €',
     tagline: 'Pour aller plus loin et tester plusieurs angles.',
     features: [
-      'Identité visuelle plus poussée',
-      '20 à 24 posts + 8 à 10 stories',
-      'One page premium',
-      '5 à 6 créas + 2 à 3 angles testés',
-      'Campagne Meta Ads 30 à 45 jours',
-      'Optimisation plus poussée',
-      'Bilan stratégique',
+      'Une identité visuelle complète et travaillée',
+      '4 à 5 semaines de publications prêtes à poster',
+      'Une page premium qui transforme vos visiteurs en demandes',
+      '5 à 6 publicités prêtes à diffuser, avec plusieurs styles testés',
+      'Votre publicité Facebook/Instagram installée et lancée sur 30 à 45 jours',
+      'Un suivi plus poussé de vos résultats',
+      'Un bilan stratégique complet en fin de campagne',
     ],
     adBudget: 'Budget pub conseillé : 500 à 1000 € (à votre charge)',
   },
@@ -132,11 +132,12 @@ export default function AcquisitionPacks() {
               <h3 className="text-xl font-semibold text-white">{pack.name}</h3>
               <p className="mt-1 text-sm text-white/50">{pack.tagline}</p>
 
-              <div className="mt-5 mb-6">
+              <div className="mt-5 mb-2">
                 <span className={`text-4xl font-bold tabular-nums ${pack.highlight ? 'text-indigo-200' : 'text-white'}`}>
                   {pack.price}
                 </span>
               </div>
+              <p className="text-xs text-white/40 mb-6">Acompte 50 % — paiement en 2 fois</p>
 
               <ul className="space-y-2.5 mb-6 flex-1">
                 {pack.features.map(feature => (

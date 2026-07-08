@@ -1,4 +1,16 @@
 import { Timestamp } from 'firebase/firestore';
+import type { BusinessCategory } from '@/config/business-categories';
+
+export type MosaicTemplate = 'mosaic-6' | 'mosaic-5' | 'mosaic-3';
+
+export interface MosaicSlotImage {
+  url: string;
+  path?: string;
+  /** Point focal du recadrage (en % de la largeur/hauteur), défaut centré 50/50 */
+  focalPoint?: { x: number; y: number };
+  /** Niveau de zoom du recadrage (en %), défaut 100 = pas de zoom */
+  zoom?: number;
+}
 
 export interface ContactSubmission {
   id: string;
@@ -91,6 +103,36 @@ export interface PortfolioItem {
   // New structured editor data
   sections?: any[]; // Will be typed as Section[] from portfolio-editor
   version?: number;
+  // Récit narratif (viewer story — conservé, non utilisé par le showcase actuel)
+  before?: { url: string; path?: string };
+  after?: { url: string; path?: string };
+  delivered?: Array<{ label: string; imageUrl: string; imagePath?: string }>;
+  // Mosaïque de la carte sur la home (ProjectShowcase)
+  businessCategory?: BusinessCategory;
+  /** Gabarit de mosaïque utilisé par la carte (absent = repli sur coverImage/imageUrl) */
+  mosaicTemplate?: MosaicTemplate;
+  /** Une image par slot, dans l'ordre défini par le gabarit choisi */
+  mosaicSlots?: MosaicSlotImage[];
+}
+
+/**
+ * Carte projet affichée sur la home (ProjectShowcase) — entité indépendante
+ * du vrai système de portfolio (PortfolioItem). L'existence d'un document
+ * ici avec published===true est le seul signal d'affichage (pas de notion
+ * "featured" : ce n'est plus PortfolioItem.featured qui gère la home).
+ */
+export interface HomeProject {
+  id: string;
+  title: string;
+  businessCategory?: BusinessCategory;
+  mosaicTemplate?: MosaicTemplate;
+  mosaicSlots?: MosaicSlotImage[];
+  /** Projet portfolio complet lié (clic carte → /portfolio/[id]), optionnel */
+  linkedPortfolioId?: string;
+  published: boolean;
+  order: number;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface OrderIntention {

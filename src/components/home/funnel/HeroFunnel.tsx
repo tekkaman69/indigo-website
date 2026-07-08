@@ -19,55 +19,53 @@ export default function HeroFunnel() {
     // Hero sombre plein écran. Le -mt-16 annule le padding-top du <main> global
     // pour que le fond passe SOUS la navbar. rounded-b + overflow-hidden : les
     // coins bas arrondis révèlent le body noir derrière (bevel façon ACA).
-    <section className="relative -mt-16 min-h-screen flex flex-col items-center justify-center text-center px-4 pt-28 pb-40 overflow-hidden rounded-b-[2.5rem]">
-      {/* ── Fond du hero : noir + large bande lumineuse en bas (esthétique ACA) ── */}
+    <section className="relative -mt-16 min-h-screen flex flex-col items-center justify-center text-center px-4 pt-24 pb-20 sm:pt-28 sm:pb-24 overflow-hidden rounded-b-[2.5rem]">
+      {/* ── Fond du hero : vidéo boucle + voiles de lisibilité ── */}
       <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
-        {/* Base noire opaque (recouvre le shader global) */}
+        {/* Base noire opaque (évite tout flash blanc avant chargement) */}
         <div className="absolute inset-0 bg-[#050509]" />
 
-        {/* Bande lumineuse pleine largeur — monte haut dans l'écran (façon ACA).
-            Les sources sont ancrées juste au bord bas (≈100%) pour que la
-            lueur irradie vers le haut, pas qu'elle reste tassée en bas. */}
-        <div className="absolute inset-x-0 bottom-0 h-[80%]">
-          {/* Source VIOLET/MAGENTA — bas gauche */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(90% 85% at 2% 100%, rgba(168,85,247,0.95) 0%, rgba(124,58,237,0.50) 26%, rgba(99,102,241,0.18) 48%, transparent 70%)',
-            }}
+        {/* Vidéo de fond en boucle (aller-retour, loop parfait).
+            poster = première frame, affichée instantanément pendant le
+            chargement. prefers-reduced-motion → poster statique, pas de lecture. */}
+        {reduce ? (
+          <img
+            src="/backgrounds/hero-poster.jpg"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          {/* Source CYAN/BLEU — bas droite */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(90% 85% at 98% 100%, rgba(34,211,238,0.78) 0%, rgba(56,189,248,0.44) 24%, rgba(99,102,241,0.16) 48%, transparent 70%)',
-            }}
-          />
-          {/* Cœur indigo central qui lie les deux ailes et remonte au centre */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(75% 95% at 50% 108%, rgba(99,102,241,0.62) 0%, rgba(79,70,229,0.26) 42%, transparent 70%)',
-            }}
-          />
-          {/* Halo blanc-bleuté concentré sous le CTA (point chaud) */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(45% 55% at 50% 102%, rgba(199,210,254,0.50) 0%, transparent 60%)',
-            }}
-          />
-        </div>
+        ) : (
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="/backgrounds/hero-poster.jpg"
+          >
+            <source src="/backgrounds/hero-loop.webm" type="video/webm" />
+            <source src="/backgrounds/hero-loop.mp4" type="video/mp4" />
+          </video>
+        )}
 
-        {/* Voile sombre en haut pour que le titre reste lisible sur du noir net */}
+        {/* Voile sombre uniforme — garantit le contraste du texte quel que
+            soit le contenu de la vidéo */}
+        <div className="absolute inset-0 bg-[#050509]/55" />
+
+        {/* Voile supplémentaire en haut pour que le titre reste lisible net */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, #050509 0%, rgba(5,5,9,0.55) 28%, transparent 52%)',
+            background: 'linear-gradient(to bottom, #050509 0%, rgba(5,5,9,0.5) 22%, transparent 48%)',
+          }}
+        />
+
+        {/* Voile bas discret pour ancrer le bevel */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-1/3"
+          style={{
+            background: 'linear-gradient(to top, rgba(5,5,9,0.6) 0%, transparent 100%)',
           }}
         />
 
@@ -82,14 +80,23 @@ export default function HeroFunnel() {
       </div>
 
       <div className="relative z-10 max-w-3xl mx-auto">
-        {/* Badge */}
+        {/* Badge géographique — différenciateur face aux agences métropole */}
         <motion.div
           initial={reduce ? {} : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 mb-7 px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.04] text-white/70 text-sm backdrop-blur-sm"
+          className="inline-flex items-center gap-2 mb-7 px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.06] text-white/70 text-sm backdrop-blur-sm"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse inline-block" />
+          <span className="relative flex w-2 h-2">
+            {!reduce && (
+              <motion.span
+                className="absolute inline-flex h-full w-full rounded-full bg-cyan-400"
+                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut' }}
+              />
+            )}
+            <span className="relative inline-flex w-2 h-2 rounded-full bg-cyan-400" />
+          </span>
           Martinique · Guadeloupe · Antilles
         </motion.div>
 
@@ -98,9 +105,9 @@ export default function HeroFunnel() {
           initial={reduce ? {} : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.05] mb-7"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] sm:leading-[1.05] mb-5 sm:mb-7"
         >
-          Attire plus de clients
+          Attirez plus de clients
           <br className="hidden sm:block" />{' '}
           avec une présence qui{' '}
           <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
@@ -108,16 +115,16 @@ export default function HeroFunnel() {
           </span>
         </motion.h1>
 
-        {/* Sous-titre */}
+        {/* Sous-titre — langage résultat, pas liste de livrables */}
         <motion.p
           initial={reduce ? {} : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
-          className="text-lg md:text-xl text-white/55 leading-relaxed mb-10 max-w-2xl mx-auto"
+          className="text-base sm:text-lg md:text-xl text-white/55 leading-relaxed mb-8 sm:mb-10 max-w-2xl mx-auto"
         >
-          Image, contenu, page de conversion et campagne publicitaire : toute la base
-          digitale pour générer des demandes qualifiées — pour les TPE de Martinique
-          et Guadeloupe.
+          On construit votre image, votre Instagram, votre page et vos publicités —
+          pour que les clients de Martinique et Guadeloupe vous trouvent, vous
+          fassent confiance, et vous contactent.
         </motion.p>
 
         {/* CTA principal */}
@@ -135,6 +142,14 @@ export default function HeroFunnel() {
           <p className="text-sm text-white/40">
             20 minutes · Zéro engagement · Résultats concrets
           </p>
+
+          {/* Preuve humaine — la confiance passe par un visage, pas un logo */}
+          <div className="mt-5 max-w-xs sm:max-w-none mx-auto">
+            <p className="text-sm text-white/60 text-center sm:text-left">
+              <span className="text-white/85 font-medium">Valentin</span>, designer &
+              fondateur — c'est moi qui vous réponds sur WhatsApp.
+            </p>
+          </div>
         </motion.div>
 
         {/* Bandeau partenaires / écosystème */}
@@ -142,12 +157,12 @@ export default function HeroFunnel() {
           initial={reduce ? {} : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-16"
+          className="mt-12 sm:mt-16"
         >
           <p className="text-[11px] uppercase tracking-[0.2em] text-white/25 mb-5">
             Un écosystème complet à votre service
           </p>
-          <div className="flex items-center justify-center gap-x-10 gap-y-5 flex-wrap">
+          <div className="flex items-center justify-center gap-x-6 sm:gap-x-10 gap-y-5 flex-wrap">
             {PARTNERS.map((p) => (
               <div key={p.name} className="flex flex-col items-center">
                 <span className="text-base font-semibold text-white/70">{p.name}</span>
