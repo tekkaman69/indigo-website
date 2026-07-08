@@ -4,7 +4,6 @@ import ProjectShowcase from '@/components/showcase/ProjectShowcase';
 import AboutFounder from '@/components/home/funnel/AboutFounder';
 import TestimonialsFunnel from '@/components/home/funnel/TestimonialsFunnel';
 import AcquisitionPacks from '@/components/home/funnel/AcquisitionPacks';
-import AuditSection from '@/components/home/funnel/AuditSection';
 import FAQFunnel from '@/components/home/funnel/FAQFunnel';
 import FinalCTAFunnel from '@/components/home/funnel/FinalCTAFunnel';
 import { WhatsAppFAB, FunnelDivider } from '@/components/home/funnel/WhatsApp';
@@ -30,7 +29,6 @@ export default function Home() {
         <FunnelDivider />
         <AcquisitionPacks />
         <FunnelDivider />
-        <AuditSection />
         <FAQFunnel />
         <FinalCTAFunnel />
       </div>
