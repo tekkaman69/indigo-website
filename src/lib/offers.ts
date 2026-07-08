@@ -10,13 +10,13 @@ export const OFFERS = {
     label: 'Pack PREZANS',
     totalPrice: 490,
     description:
-      'Fiche Google Business créée et optimisée, une page mobile avec bouton WhatsApp direct, profil Instagram remis à niveau de A à Z, 1 semaine de publications prêtes à poster.',
+      'Fiche Google Business créée et optimisée, une page mobile avec bouton WhatsApp direct, une identité visuelle de base (logo, couleurs, typographie), profil Instagram remis à niveau de A à Z, 1 semaine de publications prêtes à poster.',
   },
   'pack-local': {
     label: 'Pack KLIYAN',
     totalPrice: 1190,
     description:
-      'Fiche Google Business optimisée, page mobile qui convertit vos visiteurs en demandes WhatsApp, profil Instagram remis à niveau, 3 semaines de publications, 2 à 3 publicités Facebook/Instagram installées et lancées, suivi 30 jours avec bilan vocal WhatsApp chaque semaine.',
+      'Fiche Google Business optimisée, page mobile qui convertit vos visiteurs en demandes WhatsApp, une identité visuelle cohérente (logo, couleurs, typographie), profil Instagram remis à niveau, 3 semaines de publications, 2 à 3 publicités Facebook/Instagram installées et lancées, suivi 30 jours avec bilan vocal WhatsApp chaque semaine.',
     adBudget: 'Budget pub conseillé : 200 à 400 € (à votre charge)',
   },
   'pack-premium': {

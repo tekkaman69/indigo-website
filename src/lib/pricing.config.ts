@@ -41,6 +41,7 @@ export const PRICING_PACKS: PricingPack[] = [
     features: [
       'Fiche Google Business créée et optimisée',
       'Une page mobile avec bouton WhatsApp direct',
+      'Une identité visuelle de base (logo, couleurs, typographie)',
       'Profil Instagram remis à niveau de A à Z',
       '1 semaine de publications prêtes à poster',
     ],
@@ -56,6 +57,7 @@ export const PRICING_PACKS: PricingPack[] = [
     features: [
       'Fiche Google Business optimisée',
       'Une page mobile qui convertit vos visiteurs en demandes WhatsApp',
+      'Une identité visuelle cohérente (logo, couleurs, typographie)',
       'Profil Instagram remis à niveau de A à Z',
       '3 semaines de publications prêtes à poster',
       '2 à 3 publicités Facebook/Instagram installées et lancées',
