@@ -135,6 +135,29 @@ export interface HomeProject {
   updatedAt?: Timestamp;
 }
 
+/** Nombre de visuels d'un feed Instagram (grille 3×3 fixe). */
+export const FEED_SLOT_COUNT = 9;
+
+/**
+ * Feed Instagram réalisé pour un client, affiché sur la home (InstaFeedShowcase)
+ * — une mosaïque de 9 visuels au format 4:5 disposés en grille 3 colonnes × 3
+ * rangées, mimant l'aperçu d'un profil Instagram. Entité indépendante de
+ * HomeProject/PortfolioItem : expose les feeds Insta comme ProjectShowcase
+ * expose les identités graphiques.
+ */
+export interface InstaFeed {
+  id: string;
+  /** Nom du client / repère affiché sous le feed */
+  clientName?: string;
+  caption?: string;
+  /** Les 9 visuels du feed, dans l'ordre de lecture (gauche→droite, haut→bas) */
+  slots: MosaicSlotImage[];
+  published: boolean;
+  order: number;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
+}
+
 export interface OrderIntention {
   id: string;
   offerId: string;

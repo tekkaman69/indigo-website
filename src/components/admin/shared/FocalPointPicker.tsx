@@ -5,7 +5,7 @@ import { Crosshair, ZoomIn } from 'lucide-react';
 
 interface FocalPointPickerProps {
   url: string;
-  /** ratio par défaut du gabarit (ex: "16/10") */
+  /** ratio par défaut du gabarit/format (ex: "16/10") */
   aspect: string;
   focalPoint?: { x: number; y: number };
   zoom?: number;
@@ -16,10 +16,10 @@ interface FocalPointPickerProps {
 
 /**
  * Clic/drag sur l'aperçu pour définir le point de recadrage, slider pour le
- * zoom d'un slot de mosaïque. Le cadre est dynamique : à zoom=100% il adopte
- * le ratio du gabarit ; en dessous, il s'ajuste progressivement vers le ratio
- * naturel de l'image pour révéler le tout — jamais de recadrage forcé ni de
- * bandes vides. Identique au rendu final (MosaicSlotImage).
+ * zoom d'une image. Le cadre est dynamique : à zoom=100% il adopte le ratio
+ * fourni ; en dessous, il s'ajuste progressivement vers le ratio naturel de
+ * l'image pour révéler le tout — jamais de recadrage forcé ni de bandes
+ * vides. Générique, réutilisé par l'éditeur mosaïque et l'éditeur de feeds.
  */
 export default function FocalPointPicker({ url, aspect, focalPoint, zoom, onChange, onZoomChange, disabled }: FocalPointPickerProps) {
   const containerRef = useRef<HTMLDivElement>(null);

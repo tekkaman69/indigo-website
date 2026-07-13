@@ -1,7 +1,7 @@
 'use client';
 
 import { ImagePlus, LibraryBig } from 'lucide-react';
-import FocalPointPicker from './FocalPointPicker';
+import FocalPointPicker from '@/components/admin/shared/FocalPointPicker';
 
 interface MosaicSlotUploaderProps {
   index: number;

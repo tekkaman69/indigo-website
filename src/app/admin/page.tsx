@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import {
   LogOut, FolderOpen, Layers, MessageSquare, Users,
   ChevronRight, TrendingUp, Star, FileStack, ShoppingBag,
-  Eye, CheckCircle2, Clock,
+  Eye, CheckCircle2, Clock, Grid3x3,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Template from '../template';
@@ -160,6 +160,17 @@ export default function AdminPage() {
       border: 'border-violet-500/20',
       stat: '—',
       statLabel: 'projets home',
+    },
+    {
+      title: 'Feeds Instagram',
+      description: 'Mosaïques 3×3 de feeds Insta affichées sur la home',
+      icon: Grid3x3,
+      href: '/admin/feeds',
+      color: 'text-cyan-400',
+      bg: 'bg-cyan-500/10',
+      border: 'border-cyan-500/20',
+      stat: '—',
+      statLabel: 'feeds',
     },
   ];
 

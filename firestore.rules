@@ -59,6 +59,13 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Feeds Instagram de la home (InstaFeedShowcase) — lecture publique
+    // (filtre "published" appliqué côté requête), écriture admin uniquement
+    match /insta_feeds/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Intentions de commande (acomptes packs)
     // - création publique UNIQUEMENT en statut 'pending' (formulaire checkout,
     //   fallback si le SDK admin n'est pas configuré côté serveur)

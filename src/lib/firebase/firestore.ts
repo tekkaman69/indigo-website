@@ -15,7 +15,7 @@ import {
   DocumentData
 } from 'firebase/firestore';
 import { db } from './config';
-import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem, HomeProject } from '@/types/firebase';
+import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem, HomeProject, InstaFeed } from '@/types/firebase';
 
 export const COLLECTIONS = {
   CONTACTS: 'contacts',
@@ -26,6 +26,7 @@ export const COLLECTIONS = {
   ORDER_INTENTIONS: 'order_intentions',
   MOSAIC_ITEMS: 'mosaic_items',
   HOME_PROJECTS: 'home_projects',
+  INSTA_FEEDS: 'insta_feeds',
 } as const;
 
 // ============================================
@@ -343,5 +344,67 @@ export async function updateHomeProject(id: string, data: Partial<Omit<HomeProje
 
 export async function deleteHomeProject(id: string): Promise<void> {
   const docRef = doc(db, COLLECTIONS.HOME_PROJECTS, id);
+  await deleteDoc(docRef);
+}
+
+// ============================================
+// INSTA FEEDS (mosaïques feed Instagram 3×3 — home)
+// ============================================
+
+export async function getInstaFeedsForDisplay(): Promise<InstaFeed[]> {
+  const ref = collection(db, COLLECTIONS.INSTA_FEEDS);
+  try {
+    const q = query(ref, where('published', '==', true), orderBy('order', 'asc'), limit(16));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() })) as InstaFeed[];
+  } catch {
+    // Fallback: récupérer tous les items et filtrer côté client
+    // (utile si l'index Firestore n'est pas encore créé)
+    const snap = await getDocs(ref);
+    const all = snap.docs.map(d => ({ id: d.id, ...d.data() })) as InstaFeed[];
+    return all
+      .filter(item => item.published === true)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+      .slice(0, 16);
+  }
+}
+
+export async function getAllInstaFeeds(): Promise<InstaFeed[]> {
+  const ref = collection(db, COLLECTIONS.INSTA_FEEDS);
+  const snap = await getDocs(ref);
+  return (snap.docs.map(d => ({ id: d.id, ...d.data() })) as InstaFeed[])
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+}
+
+export async function getInstaFeedById(id: string): Promise<InstaFeed | null> {
+  const docRef = doc(db, COLLECTIONS.INSTA_FEEDS, id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as InstaFeed;
+  }
+  return null;
+}
+
+export async function addInstaFeed(data: Omit<InstaFeed, 'id' | 'createdAt'>): Promise<string> {
+  const ref = collection(db, COLLECTIONS.INSTA_FEEDS);
+  const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+  const docRef = await addDoc(ref, { ...cleanData, createdAt: Timestamp.now() });
+  return docRef.id;
+}
+
+export async function updateInstaFeed(id: string, data: Partial<Omit<InstaFeed, 'id' | 'createdAt'>>): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.INSTA_FEEDS, id);
+  const cleanData = Object.entries({ ...data, updatedAt: Timestamp.now() }).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+  await updateDoc(docRef, cleanData as DocumentData);
+}
+
+export async function deleteInstaFeed(id: string): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.INSTA_FEEDS, id);
   await deleteDoc(docRef);
 }

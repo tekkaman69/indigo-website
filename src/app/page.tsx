@@ -1,6 +1,7 @@
 import HeroFunnel from '@/components/home/funnel/HeroFunnel';
 import ProblemFunnel from '@/components/home/funnel/ProblemFunnel';
 import ProjectShowcase from '@/components/showcase/ProjectShowcase';
+import InstaFeedShowcase from '@/components/showcase/InstaFeedShowcase';
 import AboutFounder from '@/components/home/funnel/AboutFounder';
 import TestimonialsFunnel from '@/components/home/funnel/TestimonialsFunnel';
 import AcquisitionPacks from '@/components/home/funnel/AcquisitionPacks';
@@ -22,6 +23,8 @@ export default function Home() {
         <ProblemFunnel />
         <FunnelDivider />
         <ProjectShowcase />
+        <FunnelDivider />
+        <InstaFeedShowcase />
         <FunnelDivider />
         <AboutFounder />
         <FunnelDivider />
