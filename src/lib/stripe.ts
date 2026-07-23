@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
-import { getOffer, getDepositAmount, type OfferId } from '@/lib/offers';
+import { getOffer, getPaymentAmount, type OfferId } from '@/lib/offers';
 
-export { OFFERS, isValidOfferId, getOffer, getDepositAmount, type OfferId } from '@/lib/offers';
+export { OFFERS, isValidOfferId, getOffer, getDepositAmount, getPaymentAmount, type OfferId } from '@/lib/offers';
 
 // ============================================
 // CLIENT STRIPE (serveur uniquement)
@@ -42,7 +42,8 @@ export async function createDepositCheckout(data: DepositCheckoutData): Promise<
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const offer = getOffer(data.offerId);
-  const depositAmount = getDepositAmount(offer.totalPrice);
+  const paymentAmount = getPaymentAmount(offer);
+  const isFull = offer.paymentMode === 'full';
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
@@ -52,10 +53,14 @@ export async function createDepositCheckout(data: DepositCheckoutData): Promise<
         quantity: 1,
         price_data: {
           currency: 'eur',
-          unit_amount: depositAmount * 100, // centimes
+          unit_amount: paymentAmount * 100, // centimes
           product_data: {
-            name: `1er versement (3× sans frais) — ${offer.label}`,
-            description: `Premier des 3 versements pour : ${offer.label} (total ${offer.totalPrice} €).`,
+            name: isFull
+              ? offer.label
+              : `1er versement (3× sans frais) — ${offer.label}`,
+            description: isFull
+              ? `Paiement comptant pour : ${offer.label}.`
+              : `Premier des 3 versements pour : ${offer.label} (total ${offer.totalPrice} €).`,
           },
         },
       },

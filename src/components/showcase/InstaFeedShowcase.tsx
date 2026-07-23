@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { getInstaFeedsForDisplay } from '@/lib/firebase/firestore';
 import type { InstaFeed } from '@/types/firebase';
 import InstaFeedCard from './InstaFeedCard';
+import FadeCarousel from './FadeCarousel';
 import { WhatsAppButton } from '@/components/home/funnel/WhatsApp';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
@@ -38,29 +39,25 @@ export default function InstaFeedShowcase() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 max-w-2xl mx-auto"
         >
-          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Nos feeds Instagram</p>
+          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Mes feeds Instagram</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Un profil qui donne envie de vous suivre
+            Un Instagram qui donne envie de vous suivre
           </h2>
           <p className="mt-4 text-white/50 text-lg">
-            9 visuels pensés comme un feed cohérent — cliquez pour les voir en grand.
+            9 visuels pensés pour aller ensemble, comme un vrai profil soigné. Cliquez pour les voir en grand.
           </p>
         </motion.div>
 
-        {/* Grille de feeds — mosaïques 3×3 portrait, 2 par rangée en desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {feeds.map((feed, i) => (
-            <motion.div
-              key={feed.id}
-              initial={reduce ? {} : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.45, delay: (i % 4) * 0.06 }}
-            >
-              <InstaFeedCard feed={feed} />
-            </motion.div>
-          ))}
-        </div>
+        {/* Carrousel timé — 3 feeds par ligne, remplacés en fondu, en boucle
+            sur tous les feeds. Flèches + points pour naviguer manuellement. */}
+        <FadeCarousel
+          items={feeds}
+          perPage={3}
+          intervalMs={4000}
+          getKey={(feed) => feed.id}
+          gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+          renderItem={(feed) => <InstaFeedCard feed={feed} />}
+        />
 
         <motion.div
           initial={reduce ? {} : { opacity: 0 }}

@@ -16,11 +16,11 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center">
         <div className="text-center md:text-left mb-4 md:mb-0">
           <Link href="/" className="text-2xl font-bold tracking-tighter mb-2 inline-block">
-            <span className="bg-gradient-to-r from-primary via-accent to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-300 bg-clip-text text-transparent [filter:drop-shadow(0_0_10px_rgba(124,58,237,0.45))]">
               Indigo
             </span>
           </Link>
-          <p className="text-sm text-muted-foreground">&copy; {year} Indigo · Martinique & Guadeloupe. Tous droits réservés.</p>
+          <p className="text-sm text-muted-foreground">&copy; {year} Indigo · Designer français, à votre service. Tous droits réservés.</p>
         </div>
         <nav className="flex items-center gap-6">
           {footerLinks.map((link) => (

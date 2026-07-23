@@ -49,8 +49,9 @@ export default function PricingCard({ pack, index }: PricingCardProps) {
         </span>
       </div>
       <p className="text-xs text-white/40 mb-6">
-        {pack.installment}
-        {pack.deliveryNote && <> — {pack.deliveryNote}</>}
+        {pack.installment
+          ? <>{pack.installment}{pack.deliveryNote && <> — {pack.deliveryNote}</>}</>
+          : pack.deliveryNote}
       </p>
 
       {pack.fundingNote && (

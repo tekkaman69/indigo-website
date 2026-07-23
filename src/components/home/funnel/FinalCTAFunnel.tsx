@@ -17,18 +17,19 @@ export default function FinalCTAFunnel() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Prêt à attirer plus de clients<br />avec une présence qui inspire confiance ?
+            Prêt à donner à votre entreprise<br />l'image qu'elle mérite ?
           </h2>
           <p className="text-white/50 mb-8 leading-relaxed">
-            Un audit gratuit. 20 minutes. Trois recommandations concrètes.<br />
-            On vous répond sous 24h.
+            20 minutes au téléphone, gratuit. Je regarde votre situation et je vous
+            donne 3 conseils concrets.<br />
+            Je vous réponds sous 24h.
           </p>
           <WhatsAppButton
-            label="Démarrer mon audit gratuit maintenant"
+            label="Réserver mon appel gratuit"
             size="lg"
-            message="Bonjour, je souhaite démarrer mon audit gratuit. Pouvez-vous me recontacter ?"
+            message="Bonjour, je souhaite réserver mon appel gratuit. Pouvez-vous me recontacter ?"
           />
-          <p className="mt-4 text-sm text-white/25">Indigo · Martinique & Guadeloupe</p>
+          <p className="mt-4 text-sm text-white/25">Indigo · designer français, à votre service</p>
         </motion.div>
       </div>
     </section>

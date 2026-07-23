@@ -6,13 +6,18 @@ import { PRICING_PACKS } from '@/lib/pricing.config';
 import PricingCard from './pricing/PricingCard';
 import FinancingBlock from './pricing/FinancingBlock';
 import GuaranteeBanner from './pricing/GuaranteeBanner';
+import { GradientTopLine, GradientGlow } from './GradientAccents';
 
 export default function AcquisitionPacks() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="offres" className="w-full py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section id="offres" className="relative w-full py-20 px-4 overflow-hidden">
+      {/* Accents décoratifs — rebord haut + halo diffus pour réchauffer le fond */}
+      <GradientTopLine />
+      <GradientGlow className="top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-70" />
+
+      <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={reduce ? {} : { opacity: 0, y: 20 }}
@@ -21,13 +26,14 @@ export default function AcquisitionPacks() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 max-w-2xl mx-auto"
         >
-          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Nos packages de présence numérique</p>
+          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Nos formules</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Un système complet pour attirer des clients
+            Une formule claire. Un prix fixe. Zéro surprise.
           </h2>
           <p className="mt-4 text-white/55 text-lg leading-relaxed">
-            Image, contenu, page de conversion et campagne publicitaire ciblée. L'objectif :
-            maximiser vos chances d'obtenir des demandes qualifiées grâce à une présence crédible.
+            Vous choisissez jusqu'où vous voulez aller — de la simple mise en beauté
+            de votre image jusqu'aux publicités qui vous ramènent des clients.
+            Le reste, c'est mon travail.
           </p>
         </motion.div>
 
@@ -50,11 +56,10 @@ export default function AcquisitionPacks() {
           transition={{ duration: 0.4, delay: 0.2 }}
           className="mt-8 text-center text-xs text-white/30 max-w-2xl mx-auto leading-relaxed"
         >
-          Le budget publicitaire est versé directement à Meta et reste à votre charge. Nous ne
-          garantissons pas un nombre de clients : nous mettons en place un système structuré pour
-          maximiser vos chances d'obtenir des demandes qualifiées. Les acomptes sont non
-          remboursables au-delà du délai de garantie de démarrage (14 jours calendaires à compter
-          de la signature).
+          Le budget des publicités est payé directement à Facebook et reste à votre charge. Je ne
+          promets pas un nombre de clients : je mets en place tout ce qu'il faut pour vous donner
+          les meilleures chances d'en obtenir. L'acompte n'est plus remboursable passé le délai de
+          garantie de démarrage (14 jours après la signature).
         </motion.p>
       </div>
     </section>

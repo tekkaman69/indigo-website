@@ -7,27 +7,27 @@ import { useReducedMotion } from '@/hooks/use-reduced-motion';
 const TESTIMONIALS = [
   {
     name: 'Emmanuel D.',
-    role: 'CEO',
+    role: 'Gérant',
     company: 'Suteki',
-    quote: "Indigo a transformé notre image de façon radicale. Nos clients nous perçoivent maintenant comme une marque sérieuse et cohérente. Le résultat a dépassé nos attentes.",
+    quote: "Notre image a complètement changé. Aujourd'hui, nos clients nous voient comme une entreprise sérieuse. Le résultat a dépassé ce qu'on imaginait.",
     rating: 5,
     initial: 'E',
     color: 'from-indigo-600 to-violet-600',
   },
   {
     name: 'Cassandra T.',
-    role: 'CEO',
+    role: 'Fondatrice',
     company: 'Paideia',
-    quote: "Un travail rigoureux, à l'écoute, avec une vraie vision business. Pas juste du design — une stratégie complète pour notre positionnement digital.",
+    quote: "Un travail soigné, à l'écoute, et pas seulement joli : Valentin a vraiment compris ce que je voulais vendre et à qui. Ça se voit sur mes réseaux.",
     rating: 5,
     initial: 'C',
     color: 'from-violet-600 to-fuchsia-600',
   },
   {
     name: 'Claude C.',
-    role: 'Gérante & Propriétaire',
+    role: 'Gérante',
     company: 'Chez Claudie',
-    quote: "Je cherchais quelqu'un qui comprenne les besoins des petites entreprises locales. Indigo a su capter l'essence de mon établissement et lui donner une vraie identité.",
+    quote: "Je cherchais quelqu'un qui comprenne les petites entreprises comme la mienne. Valentin a su donner à mon établissement une vraie personnalité.",
     rating: 5,
     initial: 'C',
     color: 'from-cyan-600 to-indigo-600',
@@ -47,8 +47,8 @@ export default function TestimonialsFunnel() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Ils en parlent mieux que nous</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white">La confiance, ça se mérite</h2>
+          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Ce qu'en disent mes clients</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white">Ils m'ont fait confiance</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

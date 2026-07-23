@@ -40,11 +40,12 @@ export default function FinancingBlock() {
       className="mt-16 max-w-4xl mx-auto"
     >
       <div className="text-center mb-8">
+        <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Vous êtes aux Antilles ?</p>
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
           Votre projet peut être financé jusqu'à 80 %
         </h3>
         <p className="mt-3 text-white/55 text-base">
-          Guadeloupe et Martinique — nous montons le dossier avec vous.
+          En Guadeloupe et en Martinique, des aides existent. Je monte le dossier avec vous.
         </p>
       </div>
 
@@ -78,8 +79,8 @@ export default function FinancingBlock() {
       </div>
 
       <p className="mt-4 text-center text-xs text-white/30 max-w-xl mx-auto leading-relaxed">
-        Dispositifs sous conditions et susceptibles d'évoluer — nous confirmons l'éligibilité à
-        l'ouverture du dossier.
+        Ces aides ont leurs conditions et peuvent changer — on vérifie ensemble si vous y avez
+        droit avant de lancer quoi que ce soit.
       </p>
     </motion.div>
   );

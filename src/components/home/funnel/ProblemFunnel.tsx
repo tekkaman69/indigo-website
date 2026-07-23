@@ -1,25 +1,28 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles, TrendingUp, Target } from 'lucide-react';
+import { Layers, Hourglass, HelpCircle } from 'lucide-react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { WhatsAppButton } from './WhatsApp';
+import { GradientGlow } from './GradientAccents';
 
-const OUTCOMES = [
+// Section "Intérêt" (AIDA) : on nomme la douleur réelle avant de vendre.
+// La frustration n°1 des clients : ils sont perdus, donc ils ne font rien.
+const PAINS = [
   {
-    icon: Sparkles,
-    title: 'Une image qui inspire confiance dès le premier regard.',
-    body: 'Logo, visuels, site : tout raconte la même histoire, celle du sérieux de votre travail. Vos prospects le voient avant même de vous parler.',
+    icon: Layers,
+    title: 'Instagram, site, Google, pub…',
+    body: 'On vous dit qu\'il faut être partout. Résultat : vous ouvrez dix onglets, vous ne savez pas lequel compte vraiment, et vous refermez tout.',
   },
   {
-    icon: TrendingUp,
-    title: 'Des réseaux qui transforment vos abonnés en clients.',
-    body: 'Une ligne éditoriale claire et cohérente, pensée pour donner envie de vous contacter — pas juste occuper du temps.',
+    icon: Hourglass,
+    title: 'Vous n\'avez pas le temps pour ça.',
+    body: 'Vous gérez déjà votre métier du matin au soir. Passer vos soirées à bricoler un logo ou une pub, ce n\'est pas votre travail — et ça se voit.',
   },
   {
-    icon: Target,
-    title: 'Une pub qui génère de vraies demandes.',
-    body: 'Une image crédible, une offre claire et une page de conversion : les trois ingrédients pour que chaque euro investi en Meta Ads travaille pour vous.',
+    icon: HelpCircle,
+    title: 'Vous avez peur de payer pour rien.',
+    body: 'Un cousin qui « fait du design », une pub lancée au hasard… Vous avez peut-être déjà dépensé sans rien voir venir. Normal de se méfier.',
   },
 ];
 
@@ -27,23 +30,26 @@ export default function ProblemFunnel() {
   const reduce = useReducedMotion();
 
   return (
-    <section className="w-full py-20 px-4">
-      <div className="max-w-5xl mx-auto">
+    <section className="relative w-full py-20 px-4 overflow-hidden">
+      {/* Halo diffus décalé — réchauffe le fond sombre sans distraire */}
+      <GradientGlow className="top-1/4 -right-20 w-[400px] h-[400px]" />
+
+      <div className="relative max-w-5xl mx-auto">
         <motion.div
           initial={reduce ? {} : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-12 max-w-2xl mx-auto"
         >
-          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Ce qui change avec Indigo</p>
+          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Si vous vous reconnaissez là-dedans…</p>
           <h2 className="text-3xl md:text-4xl font-bold text-white">
-            Une présence numérique qui travaille vraiment pour vous
+            Vous faites du bon travail. Mais en ligne, ça ne se voit pas.
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {OUTCOMES.map((o, i) => (
+          {PAINS.map((o, i) => (
             <motion.div
               key={i}
               initial={reduce ? {} : { opacity: 0, y: 20 }}
@@ -61,17 +67,25 @@ export default function ProblemFunnel() {
           ))}
         </div>
 
+        {/* Bascule douleur → solution : le soulagement, en une phrase forte. */}
         <motion.div
-          initial={reduce ? {} : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={reduce ? {} : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-10 text-center"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-12 text-center max-w-2xl mx-auto"
         >
-          <p className="text-white/40 text-sm mb-4">
-            Si vous voulez ce résultat pour votre entreprise — on en parle.
+          <p className="text-xl md:text-2xl font-semibold text-white leading-snug">
+            La bonne nouvelle ? Vous n'avez rien à gérer.
           </p>
-          <WhatsAppButton label="En parler sur WhatsApp" size="sm" />
+          <p className="mt-3 text-white/55 leading-relaxed">
+            Vous me parlez de votre métier une fois. Je m'occupe de tout le reste —
+            votre logo, vos réseaux, votre page, vos publicités — et je vous livre
+            quelque chose de prêt à l'emploi. Vous, vous gardez vos soirées.
+          </p>
+          <div className="mt-6">
+            <WhatsAppButton label="En parler sur WhatsApp" size="sm" />
+          </div>
         </motion.div>
       </div>
     </section>

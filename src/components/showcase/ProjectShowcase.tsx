@@ -7,6 +7,7 @@ import { getHomeProjectsForDisplay } from '@/lib/firebase/firestore';
 import type { HomeProject } from '@/types/firebase';
 import type { BusinessCategory } from '@/config/business-categories';
 import ProjectMosaicCard from './ProjectMosaicCard';
+import FadeCarousel from './FadeCarousel';
 import { WhatsAppButton } from '@/components/home/funnel/WhatsApp';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
@@ -35,7 +36,9 @@ export default function ProjectShowcase() {
     return Array.from(set);
   }, [items]);
 
-  const filteredItems = (filter === 'all' ? items : items.filter(i => i.businessCategory === filter)).slice(0, 4);
+  // Tous les projets de la catégorie (le carrousel les fait défiler en boucle,
+  // 2 par page — plus de limite à 4).
+  const filteredItems = filter === 'all' ? items : items.filter(i => i.businessCategory === filter);
 
   if (isLoading) {
     return (
@@ -59,12 +62,12 @@ export default function ProjectShowcase() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10 max-w-2xl mx-auto"
         >
-          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Nos réalisations</p>
+          <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Concrètement, ça donne ça</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Une image qui donne envie de vous faire confiance
+            Des entreprises comme la vôtre, méconnaissables
           </h2>
           <p className="mt-4 text-white/50 text-lg">
-            Chaque projet raconte une transformation réelle — cliquez pour découvrir l'histoire complète.
+            Voici des marques que j'ai créées de A à Z. Regardez le résultat — cliquez pour voir de plus près.
           </p>
         </motion.div>
 
@@ -93,20 +96,16 @@ export default function ProjectShowcase() {
           </div>
         )}
 
-        {/* Grille de cartes mosaïques — 4 max à la fois, plus grandes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {filteredItems.map((item, i) => (
-            <motion.div
-              key={item.id}
-              initial={reduce ? {} : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.45, delay: (i % 4) * 0.06 }}
-            >
-              <ProjectMosaicCard item={item} />
-            </motion.div>
-          ))}
-        </div>
+        {/* Carrousel timé — 2 projets par ligne, remplacés en fondu, en boucle
+            sur tout le catalogue. Flèches + points pour naviguer manuellement. */}
+        <FadeCarousel
+          items={filteredItems}
+          perPage={2}
+          intervalMs={4000}
+          getKey={(item) => item.id}
+          gridClassName="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          renderItem={(item) => <ProjectMosaicCard item={item} />}
+        />
 
         <motion.div
           initial={reduce ? {} : { opacity: 0 }}

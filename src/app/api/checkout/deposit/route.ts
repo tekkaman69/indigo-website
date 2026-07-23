@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isValidOfferId, getOffer, getDepositAmount, createDepositCheckout } from '@/lib/stripe';
+import { isValidOfferId, getOffer, getPaymentAmount, createDepositCheckout } from '@/lib/stripe';
 import { adminCreateOrderIntention, getAdminDb } from '@/lib/firebase/admin';
 import { createOrderIntention } from '@/lib/firebase/firestore';
 
@@ -53,7 +53,8 @@ export async function POST(request: NextRequest) {
     }
 
     const offer = getOffer(offerId);
-    const depositAmount = getDepositAmount(offer.totalPrice);
+    // Montant réellement débité : total si comptant, sinon 1er des 3 versements.
+    const depositAmount = getPaymentAmount(offer);
 
     // Créer l'intention en Firestore (status pending)
     // SDK admin de préférence ; fallback SDK client si service account absent

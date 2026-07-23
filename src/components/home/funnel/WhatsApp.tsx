@@ -14,7 +14,7 @@ export function waUrl(message: string): string {
 }
 
 const DEFAULT_MESSAGE =
-  "Bonjour, j'ai vu votre site et j'aimerais en savoir plus sur l'audit gratuit.";
+  "Bonjour, j'ai vu votre site et j'aimerais en savoir plus sur l'appel gratuit.";
 
 type Size = 'sm' | 'md' | 'lg';
 
@@ -27,7 +27,7 @@ const SIZE_CLASSES: Record<Size, string> = {
 interface WhatsAppButtonProps {
   label?: string;
   size?: Size;
-  /** Message pré-rempli ; sinon message d'audit par défaut. */
+  /** Message pré-rempli ; sinon message d'appel gratuit par défaut. */
   message?: string;
   /** Occupe toute la largeur du conteneur parent (ex: dans une carte pricing). */
   fullWidth?: boolean;
@@ -78,17 +78,20 @@ export function FunnelDivider() {
 
   return (
     <div className="relative w-full h-px">
-      {/* Ligne de base */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      {/* Ligne de base — teinte indigo permanente pour réchauffer le fond sombre */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/25 to-transparent" />
+
+      {/* Point lumineux central en dégradé — petit accent qui casse la ligne */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-1 w-24 rounded-full bg-gradient-to-r from-indigo-500 via-violet-400 to-cyan-400 blur-[2px] opacity-60" />
 
       {/* Éclat au passage */}
       {!reduce && (
         <motion.div
           initial={{ opacity: 0, scaleX: 0.3 }}
-          whileInView={{ opacity: [0, 1, 0.35], scaleX: 1 }}
+          whileInView={{ opacity: [0, 1, 0.5], scaleX: 1 }}
           viewport={{ once: true, margin: '-15% 0px' }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-400/60 to-transparent"
         />
       )}
     </div>

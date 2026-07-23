@@ -13,8 +13,8 @@ export interface PricingPack {
   name: string;
   tagline: string;
   price: string;
-  /** Argument de paiement échelonné affiché sous le prix */
-  installment: string;
+  /** Argument de paiement échelonné affiché sous le prix (absent = payé comptant) */
+  installment?: string;
   /** Libellé du premier versement affiché dans le sous-CTA ("acompte dès X €") */
   firstInstallmentLabel: string;
   /** Délai de livraison affiché sous le prix (optionnel) */
@@ -33,35 +33,33 @@ export const PRICING_PACKS: PricingPack[] = [
     id: 'essentiel',
     offerId: 'pack-starter',
     name: 'ESSENTIEL',
-    tagline: "L'offre d'appel pour lancer votre présence avec une image pro.",
-    price: '299 €',
-    installment: 'ou 3 × 100 € sans frais',
-    firstInstallmentLabel: 'acompte dès 100 €',
-    deliveryNote: 'livré en 7 jours',
+    tagline: 'Une image pro pour bien démarrer, sans exploser votre budget.',
+    price: '490 €',
+    firstInstallmentLabel: 'paiement en une fois',
+    deliveryNote: 'prêt en 7 jours',
     features: [
-      '9 posts Instagram prêts à poster (feed cohérent)',
-      'Identité graphique express : logo au format SVG',
-      'Palette de couleurs sur mesure',
-      '2 typographies sélectionnées',
-      'Un support de communication au choix : flyer recto, bannière, carte de visite, bon cadeau ou carte de prestation / produit',
+      'Votre logo, vos couleurs et vos 2 polices de caractères',
+      '9 visuels Instagram prêts à publier',
+      'Un support au choix : flyer, bannière, carte de visite, bon cadeau ou carte de prix',
+      'Livré prêt à l\'emploi, vous n\'avez plus qu\'à publier',
     ],
   },
   {
     id: 'croissance',
     offerId: 'pack-local',
     name: 'CROISSANCE',
-    tagline: 'La machine à demandes, surveillée pendant 30 jours.',
+    tagline: 'Le pack qui fait venir les clients, suivi pendant un mois.',
     price: '1 190 €',
     installment: 'ou 3 × 397 € sans frais',
     firstInstallmentLabel: 'acompte dès 397 €',
     features: [
-      'Fiche Google Business optimisée',
-      'Une page mobile qui convertit vos visiteurs en demandes WhatsApp',
-      'Une identité visuelle cohérente (logo, couleurs, typographie)',
-      'Profil Instagram remis à niveau de A à Z',
-      '3 semaines de publications prêtes à poster',
-      '2 à 3 publicités Facebook/Instagram installées et lancées',
-      'Suivi 30 jours avec bilan vocal WhatsApp chaque semaine',
+      'Votre logo, vos couleurs et vos polices',
+      'Votre fiche Google mise à jour pour être bien visible',
+      'Une page web simple avec un bouton pour vous écrire sur WhatsApp',
+      'Votre compte Instagram remis à neuf de A à Z',
+      '18 visuels prêts à publier',
+      '2 à 3 publicités créées et lancées pour vous',
+      'Un mois de suivi, avec un point vocal WhatsApp chaque semaine',
     ],
     adBudget: '200 à 400 € (à votre charge)',
     highlight: true,
@@ -71,20 +69,19 @@ export const PRICING_PACKS: PricingPack[] = [
     id: 'signature',
     offerId: 'pack-premium',
     name: 'SIGNATURE',
-    tagline: "L'offre complète pour tester plusieurs angles et scaler.",
+    tagline: 'Tout ce qu\'il faut pour vous faire connaître en grand.',
     price: '1 990 €',
     installment: 'ou 3 × 664 € sans frais',
     firstInstallmentLabel: 'acompte dès 664 €',
     fundingNote:
-      'Reste à charge possible dès ~400 € avec le Chèque TIC (Guadeloupe) ou le Pass Numérique (Martinique). Montage du dossier inclus.',
+      'Aux Antilles, cette offre peut être en partie financée (Chèque TIC en Guadeloupe, Pass Numérique en Martinique). Je m\'occupe du dossier pour vous.',
     features: [
-      'Une identité visuelle complète et travaillée',
-      '4 à 5 semaines de publications prêtes à poster',
-      'Une page premium qui transforme vos visiteurs en demandes',
-      '5 à 6 publicités prêtes à diffuser, avec plusieurs angles testés',
-      'Campagne Facebook/Instagram installée et lancée sur 30 à 45 jours',
-      'Suivi renforcé + bilan stratégique complet en fin de campagne',
-      'Montage du dossier de subvention Chèque TIC / Pass Numérique inclus',
+      'Une identité visuelle complète et soignée',
+      'Une page web pro pensée pour donner envie de vous contacter',
+      '40 visuels prêts à publier',
+      '5 à 6 publicités testées pour trouver ce qui marche le mieux',
+      'Une campagne lancée et suivie pendant 1 à 1,5 mois',
+      'Un suivi rapproché et un bilan complet à la fin',
     ],
     adBudget: '500 à 1000 € (à votre charge)',
     badge: 'fundable',

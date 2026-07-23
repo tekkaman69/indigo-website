@@ -3,13 +3,14 @@
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { WhatsAppButton } from './WhatsApp';
+import HeroMockup from './HeroMockup';
 
 // Marques / outils de l'écosystème — réassurance sans gonfler les chiffres
 const PARTNERS = [
-  { name: 'Meta Ads', sub: 'Partenaire publicité' },
-  { name: 'Instagram', sub: 'Création de contenu' },
-  { name: 'Google', sub: 'Visibilité locale' },
-  { name: 'WhatsApp', sub: 'Contact direct' },
+  { name: 'Instagram', sub: 'Vos publications' },
+  { name: 'Facebook', sub: 'Vos publicités' },
+  { name: 'Google', sub: 'Votre visibilité' },
+  { name: 'WhatsApp', sub: 'Vos clients vous écrivent' },
 ];
 
 export default function HeroFunnel() {
@@ -77,90 +78,108 @@ export default function HeroFunnel() {
           </filter>
           <rect width="100%" height="100%" filter="url(#heroGrain)" />
         </svg>
+
+        {/* Liseré dégradé sur le rebord bas arrondi — casse le noir de la
+            transition hero → contenu avec une ligne indigo/violet/cyan lumineuse */}
+        <div className="absolute inset-x-8 sm:inset-x-16 bottom-0 h-px bg-gradient-to-r from-transparent via-violet-400/70 to-transparent" />
+        <div className="absolute inset-x-1/4 bottom-0 h-16 bg-gradient-to-t from-indigo-600/20 to-transparent blur-xl" />
       </div>
 
-      <div className="relative z-10 max-w-3xl mx-auto">
-        {/* Badge géographique — différenciateur face aux agences métropole */}
-        <motion.div
-          initial={reduce ? {} : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 mb-7 px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.06] text-white/70 text-sm backdrop-blur-sm"
-        >
-          <span className="relative flex w-2 h-2">
-            {!reduce && (
-              <motion.span
-                className="absolute inline-flex h-full w-full rounded-full bg-cyan-400"
-                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut' }}
+      <div className="relative z-10 w-full max-w-6xl mx-auto">
+        {/* Deux colonnes en desktop : texte à gauche, mockup à droite.
+            Sur mobile/tablette : une colonne centrée, mockup sous le texte. */}
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr] items-center gap-10 lg:gap-8">
+
+          {/* ── Colonne gauche : accroche ── */}
+          <div className="text-center lg:text-left">
+            {/* Badge de réassurance */}
+            <motion.div
+              initial={reduce ? {} : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.06] text-white/70 text-sm backdrop-blur-sm"
+            >
+              <span className="relative flex w-2 h-2">
+                {!reduce && (
+                  <motion.span
+                    className="absolute inline-flex h-full w-full rounded-full bg-cyan-400"
+                    animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                    transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut' }}
+                  />
+                )}
+                <span className="relative inline-flex w-2 h-2 rounded-full bg-cyan-400" />
+              </span>
+              Studio français · disponible partout, en direct
+            </motion.div>
+
+            {/* Headline — courte et affirmée, mot-clé en dégradé */}
+            <motion.h1
+              initial={reduce ? {} : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.25rem] font-bold tracking-[-0.03em] text-white leading-[0.98] mb-5"
+            >
+              Une image
+              <br />
+              à la hauteur
+              <br />
+              de votre{' '}
+              <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-clip-text text-transparent [text-shadow:0_0_40px_rgba(124,58,237,0.35)]">
+                savoir-faire.
+              </span>
+            </motion.h1>
+
+            {/* Sous-titre */}
+            <motion.p
+              initial={reduce ? {} : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="text-base sm:text-lg text-white/55 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
+            >
+              Vous êtes doué dans votre métier. Moi, je fais en sorte que ça se voie —
+              logo, réseaux, site, publicités. Vous n'avez rien à gérer : je livre
+              tout prêt à l'emploi.
+            </motion.p>
+
+            {/* CTA principal */}
+            <motion.div
+              initial={reduce ? {} : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-col items-center lg:items-start gap-3"
+            >
+              <WhatsAppButton
+                label="Réserver mon appel gratuit"
+                size="lg"
+                message="Bonjour, je viens de votre site et j'aimerais réserver mon appel gratuit de 20 minutes."
               />
-            )}
-            <span className="relative inline-flex w-2 h-2 rounded-full bg-cyan-400" />
-          </span>
-          Martinique · Guadeloupe · Antilles
-        </motion.div>
+              <p className="text-sm text-white/40">
+                20 minutes · sans engagement · sans blabla
+              </p>
 
-        {/* Headline */}
-        <motion.h1
-          initial={reduce ? {} : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] sm:leading-[1.05] mb-5 sm:mb-7"
-        >
-          Attirez plus de clients
-          <br className="hidden sm:block" />{' '}
-          avec une présence qui{' '}
-          <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-            inspire confiance.
-          </span>
-        </motion.h1>
-
-        {/* Sous-titre — langage résultat, pas liste de livrables */}
-        <motion.p
-          initial={reduce ? {} : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="text-base sm:text-lg md:text-xl text-white/55 leading-relaxed mb-8 sm:mb-10 max-w-2xl mx-auto"
-        >
-          On construit votre image, votre Instagram, votre page et vos publicités —
-          pour que les clients de Martinique et Guadeloupe vous trouvent, vous
-          fassent confiance, et vous contactent.
-        </motion.p>
-
-        {/* CTA principal */}
-        <motion.div
-          initial={reduce ? {} : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-col items-center gap-3"
-        >
-          <WhatsAppButton
-            label="Obtenir mon audit gratuit"
-            size="lg"
-            message="Bonjour, je viens de votre site et j'aimerais obtenir mon audit gratuit de 20 minutes."
-          />
-          <p className="text-sm text-white/40">
-            20 minutes · Zéro engagement · Résultats concrets
-          </p>
-
-          {/* Preuve humaine — la confiance passe par un visage, pas un logo */}
-          <div className="mt-5 max-w-xs sm:max-w-none mx-auto">
-            <p className="text-sm text-white/60 text-center sm:text-left">
-              <span className="text-white/85 font-medium">Valentin</span>, designer &
-              fondateur — c'est moi qui vous réponds sur WhatsApp.
-            </p>
+              {/* Preuve humaine */}
+              <p className="mt-4 text-sm text-white/60 text-center lg:text-left max-w-xs lg:max-w-none">
+                <span className="text-white/85 font-medium">Valentin</span>, designer &
+                fondateur — c'est moi qui vous réponds, en direct.
+              </p>
+            </motion.div>
           </div>
-        </motion.div>
 
-        {/* Bandeau partenaires / écosystème */}
+          {/* ── Colonne droite : composition site + téléphone (masquée sur très petit écran) ── */}
+          <div className="hidden sm:flex justify-center lg:justify-end pb-10 lg:pb-0">
+            <HeroMockup />
+          </div>
+        </div>
+
+        {/* Bandeau partenaires / écosystème — pleine largeur sous les 2 colonnes */}
         <motion.div
           initial={reduce ? {} : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-12 sm:mt-16"
+          className="mt-14 sm:mt-16"
         >
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/25 mb-5">
-            Un écosystème complet à votre service
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/25 mb-5 text-center">
+            Présent là où sont vos clients
           </p>
           <div className="flex items-center justify-center gap-x-6 sm:gap-x-10 gap-y-5 flex-wrap">
             {PARTNERS.map((p) => (

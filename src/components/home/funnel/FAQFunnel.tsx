@@ -11,24 +11,24 @@ import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 const FAQ = [
   {
-    q: 'Le budget publicitaire est-il compris dans le prix du pack ?',
-    a: "Non. Le prix du pack couvre la création (image, contenu, page de conversion) et la mise en place de la campagne. Le budget publicitaire est versé directement à Meta et reste à votre charge — nous vous conseillons un montant adapté à votre pack.",
+    q: 'Le budget des publicités est-il compris dans le prix ?',
+    a: "Non. Le prix couvre mon travail : la création de votre image, de vos visuels, de votre page et la mise en place des publicités. L'argent que vous mettez dans les publicités, lui, va directement à Facebook et reste à votre charge. Je vous conseille un montant adapté à votre formule.",
   },
   {
-    q: 'Garantissez-vous un nombre de clients ?',
-    a: "Non, et personne de sérieux ne devrait le faire. Nous mettons en place un système structuré — présence crédible, offre claire, page de conversion et campagne ciblée — pour maximiser vos chances d'obtenir des demandes qualifiées. Vous gardez la visibilité complète sur les performances.",
+    q: 'Vous garantissez combien de clients ?',
+    a: "Aucun, et personne de sérieux ne devrait vous promettre un chiffre. Ce que je fais, c'est mettre toutes les chances de votre côté : une belle image, une offre claire, une page bien faite et des publicités ciblées. Vous voyez tout ce qui se passe, en toute transparence.",
   },
   {
-    q: 'Combien de temps pour mettre en place un pack ?',
-    a: "La mise en place de la base (image, contenu, page) prend généralement une dizaine de jours, puis la campagne tourne sur la durée de suivi prévue dans votre pack (14 à 45 jours selon le pack).",
+    q: 'Combien de temps ça prend ?',
+    a: "La création de la base (image, visuels, page) prend une dizaine de jours. Ensuite, les publicités tournent pendant la durée de suivi prévue dans votre formule (de 2 semaines à 1 mois et demi selon la formule).",
   },
   {
-    q: 'Travaillez-vous uniquement en Martinique et Guadeloupe ?',
-    a: "C'est notre terrain de prédilection et nous connaissons bien le marché local. Mais nous pouvons accompagner toute TPE/PME francophone à distance — l'essentiel se fait par WhatsApp et appel.",
+    q: 'Vous travaillez seulement aux Antilles ?',
+    a: "Je suis originaire de Martinique, mais je travaille avec des entreprises partout en France. Tout se fait facilement à distance : par WhatsApp et par appel. Où que vous soyez, c'est moi qui m'occupe de votre projet.",
   },
   {
     q: 'Comment se passe le paiement ?',
-    a: "Un acompte de 50 % au démarrage, le solde à la livraison. Tout est cadré dès le départ, sans surprise.",
+    a: "L'offre Essentiel se règle en une fois (490 €). Pour les formules Croissance et Signature, vous pouvez payer en 3 fois sans frais : un premier versement au démarrage, puis deux autres aux dates convenues. Tout est clair dès le début, sans surprise.",
   },
 ];
 
@@ -46,7 +46,7 @@ export default function FAQFunnel() {
           className="text-center mb-10"
         >
           <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Questions fréquentes</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white">Ce qu'on nous demande souvent</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white">Les questions qu'on me pose souvent</h2>
         </motion.div>
 
         <Accordion type="single" collapsible className="space-y-3">

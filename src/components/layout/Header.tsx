@@ -43,7 +43,7 @@ const Header = () => {
       <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold tracking-tighter" aria-label="Indigo — accueil">
-          <span className="bg-gradient-to-r from-primary via-accent to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-300 bg-clip-text text-transparent [filter:drop-shadow(0_0_10px_rgba(124,58,237,0.45))]">
             Indigo
           </span>
         </Link>

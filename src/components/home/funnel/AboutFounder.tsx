@@ -6,8 +6,8 @@ import { MapPin, UserCheck, Clock } from 'lucide-react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 const BADGES = [
-  { icon: MapPin, label: 'Basé aux Antilles' },
-  { icon: UserCheck, label: 'Interlocuteur unique' },
+  { icon: MapPin, label: 'Originaire des Antilles, disponible partout' },
+  { icon: UserCheck, label: 'Un seul interlocuteur : moi' },
   { icon: Clock, label: 'Réponse sous 24h' },
 ];
 
@@ -52,10 +52,10 @@ export default function AboutFounder() {
           {/* Bio + badges */}
           <div className="text-center md:text-left">
             <p className="text-lg text-white/70 leading-relaxed max-w-lg">
-              Je m'appelle Valentin, designer basé en Martinique. Chez Indigo, il n'y a
-              pas d'intermédiaire : je travaille directement avec chaque client, du
-              premier échange à la mise en ligne. Quand vous m'écrivez sur WhatsApp,
-              c'est moi qui vous réponds — pas un commercial.
+              Je m'appelle Valentin, designer, originaire de Martinique et je travaille
+              avec des entreprises partout en France. Chez Indigo, pas d'intermédiaire :
+              je m'occupe de votre projet du début à la fin, moi-même. Quand vous
+              m'écrivez sur WhatsApp, c'est moi qui vous réponds — pas un commercial.
             </p>
 
             <div className="mt-6 flex flex-wrap justify-center md:justify-start gap-3">

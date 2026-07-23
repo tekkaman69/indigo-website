@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import GradientButton from '@/components/ui/GradientButton';
 import { useToast } from '@/hooks/use-toast';
-import { isValidOfferId, getOffer, getDepositAmount, type OfferId } from '@/lib/offers';
+import { isValidOfferId, getOffer, getPaymentAmount, type OfferId } from '@/lib/offers';
 import { addContactSubmission } from '@/lib/firebase/firestore';
 
 // ============================================
@@ -26,7 +26,8 @@ function CheckoutContent() {
   const offerParam = searchParams.get('offer') ?? '';
   const offerId = isValidOfferId(offerParam) ? (offerParam as OfferId) : null;
   const offer = offerId ? getOffer(offerId) : null;
-  const depositAmount = offer ? getDepositAmount(offer.totalPrice) : 0;
+  const depositAmount = offer ? getPaymentAmount(offer) : 0;
+  const isFullPayment = offer?.paymentMode === 'full';
 
   const [formData, setFormData] = useState({
     clientName: '',
@@ -165,13 +166,17 @@ function CheckoutContent() {
                   <span className="text-white font-medium">{offer.totalPrice}€</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-white/60 text-sm">1er versement aujourd'hui (3× sans frais)</span>
+                  <span className="text-white/60 text-sm">
+                    {isFullPayment ? 'À régler aujourd\'hui' : '1er versement aujourd\'hui (3× sans frais)'}
+                  </span>
                   <span className="text-2xl font-bold text-indigo-400">{depositAmount}€</span>
                 </div>
                 <div className="h-px bg-white/10" />
-                <p className="text-xs text-white/40 italic">
-                  Les 2 versements suivants ({depositAmount}€ chacun) seront réglés aux échéances convenues.
-                </p>
+                {!isFullPayment && (
+                  <p className="text-xs text-white/40 italic">
+                    Les 2 versements suivants ({depositAmount}€ chacun) seront réglés aux échéances convenues.
+                  </p>
+                )}
                 {'adBudget' in offer && (
                   <p className="text-xs text-white/30">Budget pub conseillé : {offer.adBudget}</p>
                 )}
@@ -248,7 +253,7 @@ function CheckoutContent() {
                   ) : (
                     <span className="flex items-center justify-center gap-2">
                       <CreditCard className="w-4 h-4" />
-                      Payer le 1er versement — {depositAmount}€
+                      {isFullPayment ? `Payer ${depositAmount}€` : `Payer le 1er versement — ${depositAmount}€`}
                     </span>
                   )}
                 </GradientButton>
@@ -312,14 +317,16 @@ function CheckoutContent() {
                 <>
                   <h3 className="text-xl font-bold text-white mb-1">Paiement par virement</h3>
                   <p className="text-white/50 text-sm mb-5">
-                    1er versement de {depositAmount}€ pour : {offer.label}
+                    {isFullPayment
+                      ? `Montant de ${depositAmount}€ pour : ${offer.label}`
+                      : `1er versement de ${depositAmount}€ pour : ${offer.label}`}
                   </p>
 
                   <div className="space-y-3 mb-6">
                     {[
                       { label: 'Bénéficiaire', value: 'Indigo Studio' },
                       { label: 'Montant', value: `${depositAmount}€` },
-                      { label: 'Référence', value: `ACOMPTE-${offerId.toUpperCase()}-${Date.now().toString().slice(-6)}` },
+                      { label: 'Référence', value: `${isFullPayment ? 'PAIEMENT' : 'ACOMPTE'}-${offerId.toUpperCase()}-${Date.now().toString().slice(-6)}` },
                     ].map((row) => (
                       <div key={row.label} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
                         <div>
