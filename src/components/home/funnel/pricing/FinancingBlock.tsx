@@ -1,12 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Landmark, ArrowUpRight } from 'lucide-react';
+import { Landmark } from 'lucide-react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { waUrl } from '../WhatsApp';
-
-const FUNDING_MESSAGE =
-  "Bonjour, je souhaite vérifier mon éligibilité au Chèque TIC / Pass Numérique pour financer mon projet.";
 
 interface FundingBlockItem {
   title: string;
@@ -45,7 +41,7 @@ export default function FinancingBlock() {
           Votre projet peut être financé jusqu'à 80 %
         </h3>
         <p className="mt-3 text-white/55 text-base">
-          En Guadeloupe et en Martinique, des aides existent. Je monte le dossier avec vous.
+          En Guadeloupe et en Martinique, des aides existent pour financer votre projet numérique.
         </p>
       </div>
 
@@ -65,22 +61,10 @@ export default function FinancingBlock() {
         ))}
       </div>
 
-      <div className="mt-8 text-center">
-        <a
-          href={waUrl(FUNDING_MESSAGE)}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Vérifier mon éligibilité au financement sur WhatsApp"
-          className="inline-flex items-center gap-1.5 text-sm text-indigo-300 hover:text-indigo-200 transition-colors font-medium"
-        >
-          Vérifier mon éligibilité — 5 min sur WhatsApp
-          <ArrowUpRight className="w-3.5 h-3.5" />
-        </a>
-      </div>
-
-      <p className="mt-4 text-center text-xs text-white/30 max-w-xl mx-auto leading-relaxed">
-        Ces aides ont leurs conditions et peuvent changer — on vérifie ensemble si vous y avez
-        droit avant de lancer quoi que ce soit.
+      <p className="mt-8 text-center text-xs text-white/30 max-w-xl mx-auto leading-relaxed">
+        Ces aides ont leurs conditions et peuvent changer. Renseignez-vous directement
+        auprès de l'organisme concerné (CCI, Région) pour vérifier votre éligibilité et
+        constituer votre dossier.
       </p>
     </motion.div>
   );

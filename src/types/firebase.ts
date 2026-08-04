@@ -158,6 +158,43 @@ export interface InstaFeed {
   updatedAt?: Timestamp;
 }
 
+/**
+ * Image d'un projet de communication — le ratio naturel est conservé pour la
+ * mosaïque masonry (pas de recadrage forcé). `ratio` (largeur/hauteur) est
+ * mémorisé à l'upload pour éviter tout saut de mise en page au chargement.
+ */
+export interface CommImage {
+  url: string;
+  path?: string;
+  /** Ratio largeur/hauteur de l'image (ex: 0.71 pour un portrait A4), pour le masonry */
+  ratio?: number;
+  alt?: string;
+}
+
+/**
+ * Projet de communication institutionnelle affiché sur la home (CommShowcase)
+ * — vitrine à but recruteur (poste chargé de com / graphiste au rectorat) :
+ * affiches, brochures, signalétique, supports officiels. Contrairement aux
+ * autres modules, chaque projet porte un contexte (titre + description du
+ * brief) et affiche ses visuels en mosaïque masonry flexible (ratios variés
+ * préservés). Entité indépendante de HomeProject/InstaFeed.
+ */
+export interface CommProject {
+  id: string;
+  /** Titre du projet (ex: « Affiche — Journée portes ouvertes ») */
+  title: string;
+  /** Contexte / brief en une ou deux phrases (affiché sous le titre) */
+  description?: string;
+  /** Type de support (ex: « Affiche », « Brochure », « Signalétique ») */
+  supportType?: string;
+  /** Visuels du projet, ratios variés, affichés en masonry */
+  images: CommImage[];
+  published: boolean;
+  order: number;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
+}
+
 export interface OrderIntention {
   id: string;
   offerId: string;

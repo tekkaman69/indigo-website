@@ -74,7 +74,7 @@ export const PRICING_PACKS: PricingPack[] = [
     installment: 'ou 3 × 664 € sans frais',
     firstInstallmentLabel: 'acompte dès 664 €',
     fundingNote:
-      'Aux Antilles, cette offre peut être en partie financée (Chèque TIC en Guadeloupe, Pass Numérique en Martinique). Je m\'occupe du dossier pour vous.',
+      'Aux Antilles, cette offre peut être en partie financée (Chèque TIC en Guadeloupe, Pass Numérique en Martinique). Renseignez-vous auprès de l\'organisme concerné.',
     features: [
       'Une identité visuelle complète et soignée',
       'Une page web pro pensée pour donner envie de vous contacter',

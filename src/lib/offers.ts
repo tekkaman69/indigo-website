@@ -27,7 +27,7 @@ export const OFFERS = {
     totalPrice: 1990,
     paymentMode: 'installments',
     description:
-      'Une identité visuelle complète, une page web pro, 40 visuels prêts à publier, 5 à 6 publicités testées, une campagne lancée et suivie pendant 1 à 1,5 mois, un suivi rapproché et un bilan complet à la fin. Financement possible aux Antilles (dossier inclus).',
+      'Une identité visuelle complète, une page web pro, 40 visuels prêts à publier, 5 à 6 publicités testées, une campagne lancée et suivie pendant 1 à 1,5 mois, un suivi rapproché et un bilan complet à la fin. Financement possible aux Antilles (aides Chèque TIC / Pass Numérique, sous conditions).',
     adBudget: 'Budget publicité conseillé : 500 à 1000 € (à votre charge)',
   },
 } as const;

@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import {
   LogOut, FolderOpen, Layers, MessageSquare, Users,
   ChevronRight, TrendingUp, Star, FileStack, ShoppingBag,
-  Eye, CheckCircle2, Clock, Grid3x3,
+  Eye, CheckCircle2, Clock, Grid3x3, LayoutGrid,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Template from '../template';
@@ -171,6 +171,17 @@ export default function AdminPage() {
       border: 'border-cyan-500/20',
       stat: '—',
       statLabel: 'feeds',
+    },
+    {
+      title: 'Communication',
+      description: 'Supports institutionnels (affiches, brochures…) en mosaïque',
+      icon: LayoutGrid,
+      href: '/admin/comm',
+      color: 'text-indigo-400',
+      bg: 'bg-indigo-500/10',
+      border: 'border-indigo-500/20',
+      stat: '—',
+      statLabel: 'projets',
     },
   ];
 

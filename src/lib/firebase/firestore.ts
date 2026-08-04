@@ -15,7 +15,7 @@ import {
   DocumentData
 } from 'firebase/firestore';
 import { db } from './config';
-import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem, HomeProject, InstaFeed } from '@/types/firebase';
+import type { ContactSubmission, PortfolioItem, OrderIntention, MosaicItem, HomeProject, InstaFeed, CommProject } from '@/types/firebase';
 
 export const COLLECTIONS = {
   CONTACTS: 'contacts',
@@ -27,6 +27,7 @@ export const COLLECTIONS = {
   MOSAIC_ITEMS: 'mosaic_items',
   HOME_PROJECTS: 'home_projects',
   INSTA_FEEDS: 'insta_feeds',
+  COMM_PROJECTS: 'comm_projects',
 } as const;
 
 // ============================================
@@ -406,5 +407,67 @@ export async function updateInstaFeed(id: string, data: Partial<Omit<InstaFeed, 
 
 export async function deleteInstaFeed(id: string): Promise<void> {
   const docRef = doc(db, COLLECTIONS.INSTA_FEEDS, id);
+  await deleteDoc(docRef);
+}
+
+// ============================================
+// COMM PROJECTS (supports de communication institutionnelle — home)
+// ============================================
+
+export async function getCommProjectsForDisplay(): Promise<CommProject[]> {
+  const ref = collection(db, COLLECTIONS.COMM_PROJECTS);
+  try {
+    const q = query(ref, where('published', '==', true), orderBy('order', 'asc'), limit(24));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() })) as CommProject[];
+  } catch {
+    // Fallback: récupérer tous les items et filtrer côté client
+    // (utile si l'index Firestore n'est pas encore créé)
+    const snap = await getDocs(ref);
+    const all = snap.docs.map(d => ({ id: d.id, ...d.data() })) as CommProject[];
+    return all
+      .filter(item => item.published === true)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+      .slice(0, 24);
+  }
+}
+
+export async function getAllCommProjects(): Promise<CommProject[]> {
+  const ref = collection(db, COLLECTIONS.COMM_PROJECTS);
+  const snap = await getDocs(ref);
+  return (snap.docs.map(d => ({ id: d.id, ...d.data() })) as CommProject[])
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+}
+
+export async function getCommProjectById(id: string): Promise<CommProject | null> {
+  const docRef = doc(db, COLLECTIONS.COMM_PROJECTS, id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as CommProject;
+  }
+  return null;
+}
+
+export async function addCommProject(data: Omit<CommProject, 'id' | 'createdAt'>): Promise<string> {
+  const ref = collection(db, COLLECTIONS.COMM_PROJECTS);
+  const cleanData = Object.entries(data).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+  const docRef = await addDoc(ref, { ...cleanData, createdAt: Timestamp.now() });
+  return docRef.id;
+}
+
+export async function updateCommProject(id: string, data: Partial<Omit<CommProject, 'id' | 'createdAt'>>): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.COMM_PROJECTS, id);
+  const cleanData = Object.entries({ ...data, updatedAt: Timestamp.now() }).reduce((acc, [key, value]) => {
+    if (value !== undefined) acc[key] = value;
+    return acc;
+  }, {} as Record<string, unknown>);
+  await updateDoc(docRef, cleanData as DocumentData);
+}
+
+export async function deleteCommProject(id: string): Promise<void> {
+  const docRef = doc(db, COLLECTIONS.COMM_PROJECTS, id);
   await deleteDoc(docRef);
 }
